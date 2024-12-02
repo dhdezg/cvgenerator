@@ -22,4 +22,12 @@
   .form {
     @apply flex flex-col;
   }
+
+  .step-container {
+    @apply flex flex-col justify-center items-center gap-20 p-10 h-full;
+  }
+
+  .step-title {
+    @apply text-5xl text-ronchi-950 font-bold select-none;
+  }
 }

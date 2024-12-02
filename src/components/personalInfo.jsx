@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import NavigationButtons from './navigationButtons';
 import InputField from './ui/inputField';
 
 const PersonalInfo = ({ next, onSave }) => {
@@ -9,7 +10,6 @@ const PersonalInfo = ({ next, onSave }) => {
     phone: '',
     address: '',
     linkedin: '',
-    location: '',
   });
 
   const handleInputChange = (event) => {
@@ -20,15 +20,15 @@ const PersonalInfo = ({ next, onSave }) => {
     }));
   };
 
-  const handleNextStep = () => {
+  const handleNext = () => {
     onSave(formData);
     next();
   };
 
   return (
     <section id="personalInfo" className="h-full w-full">
-      <div className="flex flex-col justify-center items-center gap-20 p-10 h-full">
-        <h2 className="text-5xl text-ronchi-950 font-bold select-none">
+      <div className="step-container">
+        <h2 className="step-title">
           Your personal data
         </h2>
         <div className="grid grid-cols-3 gap-6 font-bold text-ronchi-950">
@@ -43,9 +43,7 @@ const PersonalInfo = ({ next, onSave }) => {
               value={formData[key]}></InputField>
           ))}
         </div>
-        <button onClick={handleNextStep} className="button-base">
-          Next step
-        </button>
+        <NavigationButtons showPrev={false} onNext={handleNext}/>
       </div>
     </section>
   );

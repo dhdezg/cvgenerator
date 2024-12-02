@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import PersonalInfo from './components/personalInfo';
 import Welcome from './components/welcome';
+import WorkExperience from './components/workExperience';
 import './index.css';
 
 const App = () => {
   const STEPS = {
     WELCOME: 1,
     PERSONAL_INFO: 2,
+    WORK_EXPERIENCE: 3,
+    SKILLS: 4,
+    STUDIES: 5,
+    LANGUAGES: 6,
   };
   const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
   const [userData, setUserData] = useState({});
@@ -33,6 +38,14 @@ const App = () => {
         return (
           <PersonalInfo next={nextStep} prev={prevStep} onSave={handleSave} />
         );
+      case STEPS.WORK_EXPERIENCE:
+        return (<WorkExperience next={nextStep} prev={prevStep} onSave={handleSave}/>)
+      case STEPS.SKILLS:
+        return <div>SKILLS</div>
+      case STEPS.STUDIES:
+        return <div>STUDIES</div>
+      case STEPS.LANGUAGES:
+        return <div>LANGUAGES</div>
       default:
         return <div>Error: Step not found</div>;
     }
