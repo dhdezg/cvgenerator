@@ -10,7 +10,7 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
         value={value}
         onChange={onChange}
         placeholder={`Tell me about your ${label}`}
-        className="text-ronchi-900 bg-ronchi-100 font-normal p-2 border border-ronchi-200 rounded-md focus:outline-none focus:ring-2 focus:ring-ronchi-500"
+        className="text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500"
       />
     </div>
   );

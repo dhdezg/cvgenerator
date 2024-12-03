@@ -70,7 +70,7 @@ const WorkExperience = ({next, prev, onSave}) => {
             onChange={(e) => handleInputChange(index, e)}
             rows={4}
             placeholder="What are your main tasks in this position?"
-            className="bg-ronchi-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-ronchi-500"
+            className="bg-squirtle-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-squirtle-500"
           />
         </div>
       );
@@ -92,19 +92,19 @@ const WorkExperience = ({next, prev, onSave}) => {
       <div className="step-container">
         <h2 className="step-title">Work experience</h2>
         {experiences.map((experience, index) => (
-          <div key={index} className="w-4/5 p-4 border-2 border-ronchi-600 rounded-lg bg-ronchi-200">
+          <div key={index} className="w-4/5 p-4 border-2 border-squirtle-600 rounded-lg bg-squirtle-200">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-ronchi-950 text-lg font-semibold">Experience {index + 1}</h3>
+              <h3 className="text-squirtle-950 text-lg font-semibold">Experience {index + 1}</h3>
               {experiences.length > 1 && (
                 <button
                   onClick={() => removeExperience(index)}
-                  className="px-3 py-1 text-ronchi-50 bg-ronchi-600 rounded-md hover:bg-ronchi-400"
+                  className="px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400"
                 >
                   Remove
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-6 font-bold text-ronchi-950">
+            <div className="grid grid-cols-3 gap-6 font-bold text-squirtle-950">
               {Object.entries(experience).map(([key, value]) => (
                 <div key={key} className={key === 'tasks' ? 'col-span-3' : ''}>
                   {renderFormField(key, value, index)}

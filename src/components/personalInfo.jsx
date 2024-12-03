@@ -31,7 +31,7 @@ const PersonalInfo = ({ next, onSave }) => {
         <h2 className="step-title">
           Your personal data
         </h2>
-        <div className="w-4/5 grid grid-cols-3 gap-6 font-bold text-ronchi-950">
+        <div className="w-4/5 grid grid-cols-3 gap-6 font-bold text-squirtle-950">
           {Object.keys(formData).map((key) => (
             <InputField
               key={key}

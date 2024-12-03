@@ -9,18 +9,18 @@
 }
 @layer components {
   .input-base {
-    @apply p-3 border-2 rounded-2xl bg-ronchi-100 border-ronchi-700 focus:ring-2 focus:ring-ronchi-800 focus:outline-none text-ronchi-700;
+    @apply p-3 border-2 rounded-2xl bg-squirtle-100 border-squirtle-700 focus:ring-2 focus:ring-squirtle-800 focus:outline-none text-squirtle-700;
   }
   .input-disabled {
-    @apply bg-ronchi-50 border-ronchi-400 text-ronchi-200 cursor-not-allowed opacity-80;
+    @apply bg-squirtle-50 border-squirtle-400 text-squirtle-200 cursor-not-allowed opacity-80;
   }
 
   .button-base {
-    @apply bg-ronchi-700 hover:bg-ronchi-600 hover:scale-125 rounded-full p-5 min-w-28 text-xl text-ronchi-50 shadow-lg shadow-ronchi-600 transition-all duration-300;
+    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-5 min-w-28 text-xl text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
   }
 
   .funcionality-button {
-    @apply bg-ronchi-700 hover:bg-ronchi-600 hover:scale-125 rounded-full p-3 text-lg text-ronchi-50 shadow-lg shadow-ronchi-600 transition-all duration-300;
+    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-3 text-lg text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
   }
 
   .form {
@@ -32,6 +32,6 @@
   }
 
   .step-title {
-    @apply text-5xl text-ronchi-950 font-bold select-none;
+    @apply text-5xl text-squirtle-950 font-bold select-none;
   }
 }

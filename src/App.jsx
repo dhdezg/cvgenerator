@@ -52,13 +52,13 @@ const App = () => {
   };
 
   return (
-    <div className="font-poppins bg-gradient-to-br from-ronchi-800 to-ronchi-200 flex flex-col h-screen">
+    <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 flex flex-col h-screen">
       <main className="flex-grow">{renderStep()}</main>
       <footer className="mx-auto">
         Done with ❤️ by&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
-          className="hover:text-ronchi-950 hover:underline">
+          className="hover:text-squirtle-950 hover:underline">
           dario.dev
         </a>
       </footer>
