@@ -9,7 +9,7 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
         name={name}
         value={value}
         onChange={onChange}
-        placeholder={`Tell me about your ${label}`}
+        placeholder={`Here should be your ${label}`}
         className="text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500"
       />
     </div>

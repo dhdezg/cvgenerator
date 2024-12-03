@@ -88,7 +88,7 @@ const WorkExperience = ({next, prev, onSave}) => {
   };
 
   return (
-    <section id="workExperience" className="h-full w-full">
+    <section id="workExperience" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Work experience</h2>
         {experiences.map((experience, index) => (

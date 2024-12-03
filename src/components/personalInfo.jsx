@@ -26,7 +26,7 @@ const PersonalInfo = ({ next, onSave }) => {
   };
 
   return (
-    <section id="personalInfo" className="h-full w-full">
+    <section id="personalInfo" className="w-full">
       <div className="step-container">
         <h2 className="step-title">
           Your personal data

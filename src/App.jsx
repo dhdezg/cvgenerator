@@ -52,8 +52,8 @@ const App = () => {
   };
 
   return (
-    <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 flex flex-col h-screen">
-      <main className="flex-grow">{renderStep()}</main>
+    <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
+      <main className="flex-grow flex-shrink-0 flex items-center justify-center">{renderStep()}</main>
       <footer className="mx-auto">
         Done with ❤️ by&nbsp;
         <a
