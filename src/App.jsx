@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import PersonalInfo from './components/personalInfo';
-import Skills from './components/skills';
-import Welcome from './components/welcome';
-import WorkExperience from './components/workExperience';
-import './index.css';
+import { useState } from "react";
+import PersonalInfo from "./components/personalInfo";
+import Skills from "./components/skills";
+import Welcome from "./components/welcome";
+import WorkExperience from "./components/workExperience";
+import "./index.css";
 
 const App = () => {
   const STEPS = {
@@ -40,13 +40,15 @@ const App = () => {
           <PersonalInfo next={nextStep} prev={prevStep} onSave={handleSave} />
         );
       case STEPS.WORK_EXPERIENCE:
-        return (<WorkExperience next={nextStep} prev={prevStep} onSave={handleSave} />)
+        return (
+          <WorkExperience next={nextStep} prev={prevStep} onSave={handleSave} />
+        );
       case STEPS.SKILLS:
-        return (<Skills next={nextStep} prev={prevStep} onSave={handleSave} />)
+        return <Skills next={nextStep} prev={prevStep} onSave={handleSave} />;
       case STEPS.STUDIES:
-        return <div>STUDIES</div>
+        return <div>STUDIES</div>;
       case STEPS.LANGUAGES:
-        return <div>LANGUAGES</div>
+        return <div>LANGUAGES</div>;
       default:
         return <div>Error: Step not found</div>;
     }
@@ -54,12 +56,15 @@ const App = () => {
 
   return (
     <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
-      <main className="flex-grow flex-shrink-0 flex items-center justify-center">{renderStep()}</main>
+      <main className="flex-grow flex-shrink-0 flex items-center justify-center">
+        {renderStep()}
+      </main>
       <footer className="mx-auto">
         Done with ❤️ by&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
-          className="hover:text-squirtle-950 hover:underline">
+          className="hover:text-squirtle-950 hover:underline"
+        >
           dario.dev
         </a>
       </footer>

@@ -15,6 +15,10 @@
     @apply bg-squirtle-50 border-squirtle-400 text-squirtle-200 cursor-not-allowed opacity-80;
   }
 
+  .input-form {
+    @apply text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500;
+  }
+
   .button-base {
     @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-5 min-w-28 text-xl text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
   }

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const InputField = ({ label, name, value, onChange, type = "text" }) => {
   return (
@@ -10,7 +10,7 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
         value={value}
         onChange={onChange}
         placeholder={`Here should be your ${label}`}
-        className="text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500"
+        className="input-form"
       />
     </div>
   );
