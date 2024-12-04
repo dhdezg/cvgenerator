@@ -117,7 +117,7 @@ const WorkExperience = ({next, prev, onSave}) => {
           onClick={addExperience}
           className="funcionality-button"
         >
-          Add Another Experience
+          Add another experience
         </button>
         <NavigationButtons onNext={handleNext} onPrev={handlePrev}/>
       </div>

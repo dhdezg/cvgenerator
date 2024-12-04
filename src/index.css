@@ -34,4 +34,8 @@
   .step-title {
     @apply text-5xl text-squirtle-950 font-bold select-none;
   }
+
+  .card {
+    @apply p-4 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
+  }
 }
