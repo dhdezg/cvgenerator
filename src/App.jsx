@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PersonalInfo from "./components/personalInfo";
 import Skills from "./components/skills";
+import Studies from "./components/studies";
 import Welcome from "./components/welcome";
 import WorkExperience from "./components/workExperience";
 import "./index.css";
@@ -46,7 +47,7 @@ const App = () => {
       case STEPS.SKILLS:
         return <Skills next={nextStep} prev={prevStep} onSave={handleSave} />;
       case STEPS.STUDIES:
-        return <div>STUDIES</div>;
+        return <Studies next={nextStep} prev={prevStep} onSave={handleSave} />;
       case STEPS.LANGUAGES:
         return <div>LANGUAGES</div>;
       default:
