@@ -1,6 +1,11 @@
 import PropTypes from "prop-types";
 
-const NavigationButtons = ({ onNext, onPrev, showPrev = true, showNext = true }) => {
+const NavigationButtons = ({
+  onNext,
+  onPrev,
+  showPrev = true,
+  showNext = true,
+}) => {
   return (
     <div className="flex justify-evenly gap-20 w-full">
       {showPrev && (
@@ -19,7 +24,7 @@ const NavigationButtons = ({ onNext, onPrev, showPrev = true, showNext = true })
 
 NavigationButtons.propTypes = {
   onNext: PropTypes.func.isRequired,
-  onPrev: PropTypes.func.isRequired,
+  onPrev: PropTypes.func,
   showPrev: PropTypes.bool,
   showNext: PropTypes.bool,
 };

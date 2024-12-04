@@ -40,8 +40,9 @@ const Studies = ({ next, prev, onSave }) => {
     if (key === "startDate" || key === "endDate") {
       return (
         <InputField
+          key={`${index}-${key}`}
           type="date"
-          onChange={(e) => handleInputChange(index, e)}
+          onChange={(e) => handleStudyChange(index, e)}
           label={label}
           name={key}
           value={value}
@@ -50,7 +51,7 @@ const Studies = ({ next, prev, onSave }) => {
     }
     return (
       <InputField
-        key={key}
+        key={`${index}-${key}`}
         onChange={(e) => handleStudyChange(index, key, e.target.value)}
         label={label}
         name={key}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PersonalInfo from "./components/personalInfo";
+import Resume from "./components/resume";
 import Skills from "./components/skills";
 import Studies from "./components/studies";
 import Welcome from "./components/welcome";
@@ -14,9 +15,18 @@ const App = () => {
     SKILLS: 4,
     STUDIES: 5,
     LANGUAGES: 6,
+    RESUME: 7,
   };
+
   const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
-  const [userData, setUserData] = useState({});
+  const [formData, setFormData] = useState({
+    personalInfo: {},
+    workExperience: [],
+    skills: [],
+    studies: [],
+    languages: [],
+  });
+
   const nextStep = () =>
     setCurrentStep((prev) =>
       prev < Object.keys(STEPS).length ? prev + 1 : prev
@@ -24,12 +34,11 @@ const App = () => {
   const prevStep = () =>
     setCurrentStep((prev) => (prev > STEPS.WELCOME ? prev - 1 : prev));
 
-  const handleSave = (data) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      ...data,
+  const handleSave = (data, section) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: data,
     }));
-    console.log(userData);
   };
 
   const renderStep = () => {
@@ -38,18 +47,40 @@ const App = () => {
         return <Welcome next={nextStep} />;
       case STEPS.PERSONAL_INFO:
         return (
-          <PersonalInfo next={nextStep} prev={prevStep} onSave={handleSave} />
+          <PersonalInfo
+            next={nextStep}
+            prev={prevStep}
+            onSave={(data) => handleSave(data, "personalInfo")}
+          />
         );
       case STEPS.WORK_EXPERIENCE:
         return (
-          <WorkExperience next={nextStep} prev={prevStep} onSave={handleSave} />
+          <WorkExperience
+            next={nextStep}
+            prev={prevStep}
+            onSave={(data) => handleSave(data, "workExperience")}
+          />
         );
       case STEPS.SKILLS:
-        return <Skills next={nextStep} prev={prevStep} onSave={handleSave} />;
+        return (
+          <Skills
+            next={nextStep}
+            prev={prevStep}
+            onSave={(data) => handleSave(data, "skills")}
+          />
+        );
       case STEPS.STUDIES:
-        return <Studies next={nextStep} prev={prevStep} onSave={handleSave} />;
+        return (
+          <Studies
+            next={nextStep}
+            prev={prevStep}
+            onSave={(data) => handleSave(data, "studies")}
+          />
+        );
       case STEPS.LANGUAGES:
         return <div>LANGUAGES</div>;
+      case STEPS.RESUME:
+        return <Resume data={formData} prev={prevStep} />;
       default:
         return <div>Error: Step not found</div>;
     }
