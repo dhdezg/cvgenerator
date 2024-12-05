@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Languages from "./components/languages";
 import PersonalInfo from "./components/personalInfo";
 import Resume from "./components/resume";
 import Skills from "./components/skills";
@@ -78,7 +79,13 @@ const App = () => {
           />
         );
       case STEPS.LANGUAGES:
-        return <div>LANGUAGES</div>;
+        return (
+          <Languages
+            next={nextStep}
+            prev={prevStep}
+            onSave={(data) => handleSave(data, "languages")}
+          />
+        );
       case STEPS.RESUME:
         return <Resume data={formData} prev={prevStep} />;
       default:

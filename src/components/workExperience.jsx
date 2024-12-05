@@ -57,7 +57,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           onChange={(e) => handleInputChange(index, e)}
           label={label}
           name={key}
-          value={value}
+          value={value || ""}
         />
       );
     } else if (key === "tasks") {
@@ -66,7 +66,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           <label className="mb-2">{label}</label>
           <textarea
             name={key}
-            value={value}
+            value={value || ""}
             onChange={(e) => handleInputChange(index, e)}
             rows={4}
             placeholder="What are your main tasks in this position?"

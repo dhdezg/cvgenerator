@@ -23,7 +23,7 @@ const NavigationButtons = ({
 };
 
 NavigationButtons.propTypes = {
-  onNext: PropTypes.func.isRequired,
+  onNext: PropTypes.func,
   onPrev: PropTypes.func,
   showPrev: PropTypes.bool,
   showNext: PropTypes.bool,

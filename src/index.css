@@ -40,6 +40,6 @@
   }
 
   .card {
-    @apply p-4 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
+    @apply p-10 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
   }
 }

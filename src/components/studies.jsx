@@ -42,10 +42,10 @@ const Studies = ({ next, prev, onSave }) => {
         <InputField
           key={`${index}-${key}`}
           type="date"
-          onChange={(e) => handleStudyChange(index, e)}
+          onChange={(e) => handleStudyChange(index, key, e.target.value)}
           label={label}
           name={key}
-          value={value}
+          value={value || ""}
         />
       );
     }

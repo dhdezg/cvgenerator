@@ -60,7 +60,6 @@ const Skills = ({ next, prev, onSave }) => {
                   label="Skill Name"
                   name={`skill-${index}`}
                   value={skill.name}
-                  placeholder="Skill name"
                   onChange={(e) =>
                     handleSkillChange(index, "name", e.target.value)
                   }
