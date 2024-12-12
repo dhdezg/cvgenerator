@@ -59,6 +59,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#000000",
   },
+  columnContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 2,
+  },
+  columnItem: {
+    width: "33%",
+    marginBottom: 2,
+  },
 });
 
 const ResumePDF = ({ data }) => {
@@ -94,11 +104,11 @@ const ResumePDF = ({ data }) => {
               </View>
               <Text style={styles.text}>{work.position}</Text>
 
-              <Text style={styles.textBold}>Skills required:</Text>
-              <View style={{ marginLeft: 10 }}>
-                {work.skills.split(",").map((skill, index) => (
-                  <Text key={index} style={styles.listItem}>
-                    • {skill.trim()}
+              <Text style={styles.textBold}>Used technologies:</Text>
+              <View style={styles.columnContainer}>
+                {work.technologies.split(",").map((technology, index) => (
+                  <Text key={index} style={styles.columnItem}>
+                    • {technology.trim()}
                   </Text>
                 ))}
               </View>
@@ -122,11 +132,13 @@ const ResumePDF = ({ data }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.divider} />
-          {skills.map((skill, index) => (
-            <Text key={index} style={styles.listItem}>
-              • {skill.name} - {skill.level}
-            </Text>
-          ))}
+          <View style={styles.columnContainer}>
+            {skills.map((skill, index) => (
+              <Text key={index} style={styles.columnItem}>
+                • {skill.name} - {skill.level}
+              </Text>
+            ))}
+          </View>
         </View>
 
         {/* Languages */}
@@ -147,13 +159,11 @@ const ResumePDF = ({ data }) => {
           <View style={styles.divider} />
           {studies.map((study, index) => (
             <View key={index} style={{ marginBottom: 10 }}>
-              <Text style={[styles.textBold, { fontSize: 14 }]}>
-                {study.schoolName}
-              </Text>
-              <Text style={styles.text}>{study.degree}</Text>
-              <Text style={styles.text}>
-                {formatDate(study.startDate)} - {formatDate(study.endDate)}
-              </Text>
+              <Text style={styles.textBold}>{study.schoolName}</Text>
+              <View style={[styles.row, { justifyContent: "space-between" }]}>
+                <Text style={styles.text}>{study.degree}</Text>
+                <Text style={styles.text}>{formatDate(study.endDate)}</Text>
+              </View>
             </View>
           ))}
         </View>
