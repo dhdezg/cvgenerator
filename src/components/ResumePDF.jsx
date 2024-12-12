@@ -69,10 +69,13 @@ const ResumePDF = ({ data }) => {
         {/* Personal info */}
         <View style={styles.personalInfo}>
           <Text style={styles.name}>{personalInfo.fullName}</Text>
-          <Text style={styles.personalInfoText}>
-            {personalInfo.email} • {personalInfo.phone}
-          </Text>
-          <Text>{personalInfo.linkedin}</Text>
+          <View style={styles.personalInfoText}>
+            <Text>
+              {personalInfo.email} • {personalInfo.phone}
+            </Text>
+            <Text>{personalInfo.linkedin}</Text>
+            <Text>{personalInfo.address}</Text>
+          </View>
         </View>
 
         {/* Work Experience */}
