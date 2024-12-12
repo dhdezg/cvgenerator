@@ -1,5 +1,6 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import React from "react";
+import { formatDate } from "../helper";
 
 const styles = StyleSheet.create({
   page: {
@@ -88,7 +89,7 @@ const ResumePDF = ({ data }) => {
                 <Text style={styles.textBold}>{work.companyName}</Text>
                 <Text style={styles.text}>
                   {" "}
-                  • {work.startDate} / {work.endDate}
+                  • {formatDate(work.startDate)} / {formatDate(work.endDate)}
                 </Text>
               </View>
               <Text style={styles.text}>{work.position}</Text>
@@ -134,7 +135,8 @@ const ResumePDF = ({ data }) => {
           <View style={styles.divider} />
           {languages.map((language, index) => (
             <Text key={index} style={styles.listItem}>
-              • {language.language}: {language.level}
+              • {language.language}: {language.level}{" "}
+              {language.institution ? `(${language.institution})` : ""}
             </Text>
           ))}
         </View>
@@ -150,7 +152,7 @@ const ResumePDF = ({ data }) => {
               </Text>
               <Text style={styles.text}>{study.degree}</Text>
               <Text style={styles.text}>
-                {study.startDate} - {study.endDate}
+                {formatDate(study.startDate)} - {formatDate(study.endDate)}
               </Text>
             </View>
           ))}
