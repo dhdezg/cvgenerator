@@ -1,9 +1,10 @@
-
-import PropTypes from 'prop-types';
-import NavigationButtons from './navigationButtons';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PropTypes from "prop-types";
+import NavigationButtons from "./navigationButtons";
+import ResumePDF from "./ResumePDF";
 
 const Resume = ({ data, prev }) => {
-  const { personalInfo, workExperience, skills, studies } = data;
+  const { personalInfo, workExperience, skills, languages, studies } = data;
 
   return (
     <section id="resume" className="w-full">
@@ -30,7 +31,9 @@ const Resume = ({ data, prev }) => {
               <div key={index} className="mb-4">
                 <h4 className="font-bold">{exp.companyName}</h4>
                 <p>{exp.position}</p>
-                <p>{exp.startDate} - {exp.endDate}</p>
+                <p>
+                  {exp.startDate} / {exp.endDate}
+                </p>
                 <p>{exp.tasks}</p>
               </div>
             ))}
@@ -49,6 +52,19 @@ const Resume = ({ data, prev }) => {
             </div>
           </div>
 
+          {/* Languages Section */}
+          <div className="card">
+            <h3 className="text-xl font-bold mb-4">Languages</h3>
+            <div className="grid grid-cols-2 gap-4">
+              {languages.map((language, index) => (
+                <div key={index}>
+                  <span className="font-bold">{language.language}: </span>
+                  <span>{language.level}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Studies Section */}
           <div className="card">
             <h3 className="text-xl font-bold mb-4">Education</h3>
@@ -56,12 +72,28 @@ const Resume = ({ data, prev }) => {
               <div key={index} className="mb-4">
                 <h4 className="font-bold">{study.schoolName}</h4>
                 <p>{study.degree}</p>
-                <p>{study.startDate} - {study.endDate}</p>
+                <p>
+                  {study.startDate} / {study.endDate}
+                </p>
               </div>
             ))}
           </div>
         </div>
-        <NavigationButtons showNext={false} onPrev={prev} />
+        <div className="flex gap-10">
+          <NavigationButtons showNext={false} onPrev={prev} />
+
+          <div className="funcionality-button flex items-center">
+            <PDFDownloadLink
+              document={<ResumePDF data={data} />}
+              fileName="resume.pdf"
+              className="text-nowrap text-center"
+            >
+              {({ loading }) =>
+                loading ? "Loading document..." : "Download resume"
+              }
+            </PDFDownloadLink>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -72,9 +104,9 @@ Resume.propTypes = {
     personalInfo: PropTypes.object,
     workExperience: PropTypes.array,
     skills: PropTypes.array,
-    studies: PropTypes.array
+    studies: PropTypes.array,
   }).isRequired,
-  prev: PropTypes.func.isRequired
+  prev: PropTypes.func.isRequired,
 };
 
 export default Resume;
