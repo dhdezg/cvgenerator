@@ -3,10 +3,8 @@ import NavigationButtons from "./navigationButtons";
 import InputField from "./ui/inputField";
 
 const Skills = ({ next, prev, onSave }) => {
-  const skillLevels = ["beginner", "intermediate", "advanced"];
   const emptySkill = {
     name: "",
-    level: skillLevels[0],
   };
   const [skills, setSkills] = useState([emptySkill]);
   const addSkill = () => {
@@ -64,24 +62,6 @@ const Skills = ({ next, prev, onSave }) => {
                     handleSkillChange(index, "name", e.target.value)
                   }
                 />
-                <div className="flex flex-col gap-2">
-                  <label htmlFor={`level-${index}`}>Skill Level</label>
-                  <select
-                    id={`level-${index}`}
-                    name={`level-${index}`}
-                    value={skill.level}
-                    onChange={(e) =>
-                      handleSkillChange(index, "level", e.target.value)
-                    }
-                    className="text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500"
-                  >
-                    {skillLevels.map((level) => (
-                      <option key={level} value={level}>
-                        {level.charAt(0).toUpperCase() + level.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
             </div>
           ))}

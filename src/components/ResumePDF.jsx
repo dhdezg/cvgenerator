@@ -95,11 +95,10 @@ const ResumePDF = ({ data }) => {
           <View style={styles.divider} />
           {workExperience.map((work, workIndex) => (
             <View key={workIndex} style={{ marginBottom: 10 }}>
-              <View style={styles.row}>
+              <View style={[styles.row, { justifyContent: "space-between" }]}>
                 <Text style={styles.textBold}>{work.companyName}</Text>
                 <Text style={styles.text}>
-                  {" "}
-                  • {formatDate(work.startDate)} / {formatDate(work.endDate)}
+                  {formatDate(work.startDate)} / {formatDate(work.endDate)}
                 </Text>
               </View>
               <Text style={styles.text}>{work.position}</Text>
@@ -135,7 +134,7 @@ const ResumePDF = ({ data }) => {
           <View style={styles.columnContainer}>
             {skills.map((skill, index) => (
               <Text key={index} style={styles.columnItem}>
-                • {skill.name} - {skill.level}
+                • {skill.name}
               </Text>
             ))}
           </View>
