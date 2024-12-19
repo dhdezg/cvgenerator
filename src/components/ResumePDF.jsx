@@ -68,11 +68,11 @@ const styles = StyleSheet.create({
   columnContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     gap: 2,
   },
   columnItem: {
-    width: "25%",
+    width: "33%",
     marginBottom: 2,
   },
 });
@@ -118,9 +118,9 @@ const ResumePDF = ({ data }) => {
                 </Text>
 
                 <Text style={styles.textBold}>Used technologies:</Text>
-                <View style={{ marginLeft: 10 }}>
+                <View style={[styles.columnContainer, { marginLeft: 10 }]}>
                   {work.technologies.split(",").map((technology, index) => (
-                    <Text key={index} style={styles.listItem}>
+                    <Text key={index} style={styles.columnItem}>
                       • {technology.trim()}
                     </Text>
                   ))}
