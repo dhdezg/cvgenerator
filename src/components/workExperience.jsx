@@ -8,7 +8,6 @@ const WorkExperience = ({ next, prev, onSave }) => {
     startDate: "",
     endDate: "",
     position: "",
-    skills: "",
     technologies: "",
     tasks: "",
   };
@@ -58,6 +57,9 @@ const WorkExperience = ({ next, prev, onSave }) => {
           label={label}
           name={key}
           value={value || ""}
+          placeholder={
+            key === "endDate" ? "Leave empty if current position" : ""
+          }
         />
       );
     } else if (key === "tasks") {
