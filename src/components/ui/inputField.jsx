@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
 
-const InputField = ({ label, name, value, onChange, type = "text" }) => {
+const InputField = ({ label,clarificationMessage, name, value, onChange, type = "text" }) => {
   return (
     <div className="flex flex-col gap-2">
-      <label className="">{label}</label>
+      <div className="flex items-center">
+        <label className="font-bold mr-2">{label}</label>
+        {clarificationMessage && (
+          <span className="font-normal text-xs text-nowrap">{clarificationMessage}</span>
+        )}
+      </div>
       <input
         type={type}
         name={name}
@@ -18,11 +23,11 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
 
 InputField.propTypes = {
   label: PropTypes.string.isRequired,
+  clarificationMessage: PropTypes.string,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  required: PropTypes.bool,
 };
 
 export default InputField;

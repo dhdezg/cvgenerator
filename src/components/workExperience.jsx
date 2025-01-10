@@ -82,13 +82,10 @@ const WorkExperience = ({ next, prev, onSave }) => {
     } else if (key === "technologies") {
       return (
         <div className="flex flex-col">
-          <label>
-            {label}
-            <span className="text-xs font-normal text-nowrap"> (separates with "," each technology)</span>
-          </label>
           <InputField
+            label={label}
+            clarificationMessage="(separates with ',' each technology)"
             onChange={(e) => handleInputChange(index, e)}
-            
             name={key}
             value={value}
           />
