@@ -65,7 +65,10 @@ const WorkExperience = ({ next, prev, onSave }) => {
     } else if (key === "tasks") {
       return (
         <div className="flex flex-col col-span-3">
-          <label className="mb-2">{label}</label>
+          <label className="mb-2">
+            {label}
+            <span className="text-xs font-normal text-nowrap"> (separates with "." each task)</span>
+          </label>
           <textarea
             name={key}
             value={value || ""}
@@ -73,6 +76,21 @@ const WorkExperience = ({ next, prev, onSave }) => {
             rows={4}
             placeholder="What are your main tasks in this position?"
             className="bg-squirtle-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-squirtle-500"
+          />
+        </div>
+      );
+    } else if (key === "technologies") {
+      return (
+        <div className="flex flex-col">
+          <label>
+            {label}
+            <span className="text-xs font-normal text-nowrap"> (separates with "," each technology)</span>
+          </label>
+          <InputField
+            onChange={(e) => handleInputChange(index, e)}
+            
+            name={key}
+            value={value}
           />
         </div>
       );
