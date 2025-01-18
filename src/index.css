@@ -16,15 +16,15 @@
   }
 
   .input-form {
-    @apply text-squirtle-900 bg-squirtle-100 font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500;
+    @apply text-squirtle-900 bg-squirtle-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500;
   }
 
   .button-base {
-    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-5 min-w-28 text-xl text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
+    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-5 min-w-28 xs:text-base md:text-xl text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
   }
 
   .funcionality-button {
-    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-3 text-lg text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
+    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-3 xs:text-base md:text-lg text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
   }
 
   .form {
@@ -40,6 +40,6 @@
   }
 
   .card {
-    @apply p-10 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
+    @apply xs:p-6 md:p-10 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
   }
 }

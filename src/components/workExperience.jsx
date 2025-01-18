@@ -75,9 +75,9 @@ const WorkExperience = ({ next, prev, onSave }) => {
     } else if (key === 'tasks') {
       return (
         <div className="flex flex-col col-span-3">
-          <label className="mb-2">
+          <label className="xs:text-sm md:text-lg mb-2">
             {label}
-            <span className="text-xs font-normal text-nowrap">
+            <span className="mdtext-xs font-normal xs:text-2xs md:text-nowrap">
               {' '}
               (separates with "." each task)
             </span>
@@ -88,7 +88,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
             onChange={(e) => handleInputChange(index, e)}
             rows={4}
             placeholder="What are your main tasks in this position?"
-            className="bg-squirtle-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-squirtle-500"
+            className="xs:placeholder:text-xs md:placeholder:text-sm bg-squirtle-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-squirtle-500"
           />
         </div>
       );
@@ -121,11 +121,11 @@ const WorkExperience = ({ next, prev, onSave }) => {
     <section id="workExperience" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Work experience</h2>
-        <div className="flex flex-col gap-4 w-3/4">
+        <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {experiences.map((experience, index) => (
             <div key={index} className="card">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-squirtle-950 text-lg font-semibold">
+                <h3 className="text-squirtle-950 xs:text-base md:text-lg font-semibold">
                   Experience {index + 1}
                 </h3>
                 {experiences.length > 1 && (
@@ -136,7 +136,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
                   </button>
                 )}
               </div>
-              <div className="grid grid-cols-3 gap-6 font-bold text-squirtle-950">
+              <div className="xs:flex flex-col md:grid grid-cols-3 xs:gap-4 md:gap-6 font-bold text-squirtle-950">
                 {Object.entries(experience).map(([key, value]) => (
                   <div
                     key={key}

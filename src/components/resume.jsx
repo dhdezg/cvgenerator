@@ -17,16 +17,18 @@ const Resume = ({ data, prev }) => {
     <section id="resume" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Your Resume</h2>
-        <div className="w-3/4 space-y-6">
+        <div className="xs:w-full md:w-3/4 space-y-6">
           {/* Personal Info Section */}
           {hasValidPersonalInfo(personalInfo) && (
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">Personal Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">
+                Personal Information
+              </h3>
+              <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
                 {Object.entries(personalInfo).map(([key, value]) => (
                   <div key={key}>
                     <span className="font-bold">{key}: </span>
-                    <span>{value}</span>
+                    <span className="xs:text-base md:text-base">{value}</span>
                   </div>
                 ))}
               </div>
@@ -36,7 +38,9 @@ const Resume = ({ data, prev }) => {
           {/* Work Experience Section */}
           {hasValidWorkExperience(workExperience) && (
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">Work Experience</h3>
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">
+                Work Experience
+              </h3>
               {workExperience.map((exp, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-bold">{exp.companyName}</h4>
@@ -53,8 +57,8 @@ const Resume = ({ data, prev }) => {
           {/* Skills Section */}
           {hasValidSkills(skills) && (
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">Skills</h3>
-              <div className="grid grid-cols-4 gap-4">
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">Skills</h3>
+              <div className="xs:flex flex-col md:grid grid-cols-4 gap-4">
                 {skills.map((skill, index) => (
                   <div key={index}>
                     <span>{skill.name}</span>
@@ -67,8 +71,10 @@ const Resume = ({ data, prev }) => {
           {/* Languages Section */}
           {hasValidLanguages(languages) && (
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">Languages</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">
+                Languages
+              </h3>
+              <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
                 {languages.map((language, index) => (
                   <div key={index}>
                     <span className="font-bold">{language.language}: </span>
@@ -82,7 +88,9 @@ const Resume = ({ data, prev }) => {
           {/* Studies Section */}
           {hasValidStudies(studies) && (
             <div className="card">
-              <h3 className="text-xl font-bold mb-4">Education</h3>
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">
+                Education
+              </h3>
               {studies.map((study, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-bold">{study.schoolName}</h4>

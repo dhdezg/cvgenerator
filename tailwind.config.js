@@ -29,6 +29,9 @@ export default {
           950: '#083444',
         },
       },
+      fontSize: {
+        '2xs': ['0.5rem', { lineHeight: '0.75rem' }],
+      },
     },
   },
   plugins: [],
