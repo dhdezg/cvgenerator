@@ -43,12 +43,12 @@ const Languages = ({ next, prev, onSave }) => {
     <section id="languages" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Your known languages</h2>
-        <div className="flex flex-col gap-4 w-3/4">
+        <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {languages.map((language, index) => (
             <div key={index}>
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
-                  <h3 className="text-squirtle-950 text-lg font-semibold">
+                  <h3 className="text-squirtle-950 xs:text-base md:text-lg font-semibold">
                     Language {index + 1}
                   </h3>
                   {languages.length > 1 && (

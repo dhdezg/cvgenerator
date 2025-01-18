@@ -1,12 +1,21 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const InputField = ({ label,clarificationMessage, name, value, onChange, type = "text" }) => {
+const InputField = ({
+  label,
+  clarificationMessage,
+  name,
+  value,
+  onChange,
+  type = 'text',
+}) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center">
-        <label className="font-bold mr-2">{label}</label>
+        <label className="font-bold mr-2 xs:text-sm md:text-lg">{label}</label>
         {clarificationMessage && (
-          <span className="font-normal text-xs text-nowrap">{clarificationMessage}</span>
+          <span className="font-normal xs:text-2xs md:text-xs md:text-nowrap">
+            {clarificationMessage}
+          </span>
         )}
       </div>
       <input

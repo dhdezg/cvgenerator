@@ -73,7 +73,7 @@ const Studies = ({ next, prev, onSave }) => {
     <section id="studies" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Your studies</h2>
-        <div className="flex flex-col gap-4 w-3/4">
+        <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {studies.map((study, index) => (
             <div key={index}>
               <div className="card flex flex-col gap-4">
