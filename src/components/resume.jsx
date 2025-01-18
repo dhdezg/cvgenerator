@@ -1,14 +1,14 @@
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import PropTypes from "prop-types";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import {
   hasValidLanguages,
   hasValidPersonalInfo,
   hasValidSkills,
   hasValidStudies,
   hasValidWorkExperience,
-} from "../helper";
-import NavigationButtons from "./navigationButtons";
-import ResumePDF from "./ResumePDF";
+} from '../helper';
+import NavigationButtons from './navigationButtons';
+import ResumePDF from './ResumePDF';
 
 const Resume = ({ data, prev }) => {
   const { personalInfo, workExperience, skills, languages, studies } = data;
@@ -42,7 +42,7 @@ const Resume = ({ data, prev }) => {
                   <h4 className="font-bold">{exp.companyName}</h4>
                   <p>{exp.position}</p>
                   <p>
-                    {exp.startDate} / {exp.endDate ? exp.endDate : "Present"}
+                    {exp.startDate} / {exp.endDate ? exp.endDate : 'Present'}
                   </p>
                   <p>{exp.tasks}</p>
                 </div>
@@ -102,10 +102,9 @@ const Resume = ({ data, prev }) => {
             <PDFDownloadLink
               document={<ResumePDF data={data} />}
               fileName="resume.pdf"
-              className="text-nowrap text-center"
-            >
+              className="text-nowrap text-center">
               {({ loading }) => (
-                <p>{loading ? "Loading document..." : "Download resume"}</p>
+                <p>{loading ? 'Loading document...' : 'Download resume'}</p>
               )}
             </PDFDownloadLink>
           </div>
@@ -121,6 +120,7 @@ Resume.propTypes = {
     workExperience: PropTypes.array,
     skills: PropTypes.array,
     studies: PropTypes.array,
+    languages: PropTypes.array,
   }).isRequired,
   prev: PropTypes.func.isRequired,
 };
