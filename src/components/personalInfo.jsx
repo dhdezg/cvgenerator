@@ -38,7 +38,7 @@ const PersonalInfo = ({ next, onSave }) => {
     <section id="personalInfo" className="w-full">
       <div className="step-container">
         <h2 className="step-title">Your personal data</h2>
-        <div className="card w-3/4 grid grid-cols-3 gap-6 font-bold text-squirtle-950">
+        <div className="card w-3/4 xs:flex flex-col md:grid grid-cols-3 gap-6 font-bold text-squirtle-950">
           {Object.keys(formData).map((key) => (
             <InputField
               key={key}
