@@ -1,16 +1,25 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
-import NavigationButtons from "./navigationButtons";
-import InputField from "./ui/inputField";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import NavigationButtons from './navigationButtons';
+import InputField from './ui/inputField';
 
 const PersonalInfo = ({ next, onSave }) => {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    linkedin: "",
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    linkedin: '',
   });
+
+  useEffect(() => {
+    const savedData = JSON.parse(
+      localStorage.getItem('formData')
+    )?.personalInfo;
+    if (savedData) {
+      setFormData(savedData);
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -35,7 +44,7 @@ const PersonalInfo = ({ next, onSave }) => {
               key={key}
               onChange={handleInputChange}
               label={key
-                .replace(/([A-Z])/g, " $1")
+                .replace(/([A-Z])/g, ' $1')
                 .replace(/^./, (str) => str.toUpperCase())}
               name={key}
               value={formData[key]}

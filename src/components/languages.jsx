@@ -1,14 +1,23 @@
-import { useState } from "react";
-import NavigationButtons from "./navigationButtons";
-import InputField from "./ui/inputField";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import NavigationButtons from './navigationButtons';
+import InputField from './ui/inputField';
 
 const Languages = ({ next, prev, onSave }) => {
   const emptyLanguage = {
-    language: "",
-    level: "",
-    institution: "",
+    language: '',
+    level: '',
+    institution: '',
   };
   const [languages, setLanguages] = useState([{ ...emptyLanguage }]);
+
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem('formData'))?.languages;
+    if (savedData && savedData.length > 0) {
+      setLanguages(savedData);
+    }
+  }, []);
+
   const addLanguage = () => {
     setLanguages((prev) => [...prev, { ...emptyLanguage }]);
   };
@@ -45,8 +54,7 @@ const Languages = ({ next, prev, onSave }) => {
                   {languages.length > 1 && (
                     <button
                       onClick={() => removeLanguage(index)}
-                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400"
-                    >
+                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
                       Remove
                     </button>
                   )}
@@ -56,10 +64,10 @@ const Languages = ({ next, prev, onSave }) => {
                     key={`${index}-${key}`}
                     onChange={(e) => handleLanguageChange(index, e)}
                     label={key
-                      .replace(/([A-Z])/g, " $1")
+                      .replace(/([A-Z])/g, ' $1')
                       .replace(/^./, (str) => str.toUpperCase())}
                     name={key}
-                    value={value || ""}
+                    value={value || ''}
                   />
                 ))}
               </div>
@@ -67,8 +75,7 @@ const Languages = ({ next, prev, onSave }) => {
           ))}
           <button
             onClick={addLanguage}
-            className="funcionality-button w-fit self-center"
-          >
+            className="funcionality-button w-fit self-center">
             Add another language
           </button>
         </div>
@@ -76,6 +83,12 @@ const Languages = ({ next, prev, onSave }) => {
       </div>
     </section>
   );
+};
+
+Languages.propTypes = {
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Languages;

@@ -1,15 +1,24 @@
-import { useState } from "react";
-import NavigationButtons from "./navigationButtons";
-import InputField from "./ui/inputField";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import NavigationButtons from './navigationButtons';
+import InputField from './ui/inputField';
 
 const Studies = ({ next, prev, onSave }) => {
   const emptyStudy = {
-    schoolName: "",
-    degree: "",
-    startDate: "",
-    endDate: "",
+    schoolName: '',
+    degree: '',
+    startDate: '',
+    endDate: '',
   };
   const [studies, setStudies] = useState([{ ...emptyStudy }]);
+
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem('formData'))?.studies;
+    if (savedData && savedData.length > 0) {
+      setStudies(savedData);
+    }
+  }, []);
+
   const addStudy = () => {
     setStudies((prev) => [...prev, { ...emptyStudy }]);
   };
@@ -34,10 +43,10 @@ const Studies = ({ next, prev, onSave }) => {
 
   const renderFormField = (key, value, index) => {
     const label = key
-      .replace(/([A-Z])/g, " $1")
+      .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (str) => str.toUpperCase());
 
-    if (key === "startDate" || key === "endDate") {
+    if (key === 'startDate' || key === 'endDate') {
       return (
         <InputField
           key={`${index}-${key}`}
@@ -45,7 +54,7 @@ const Studies = ({ next, prev, onSave }) => {
           onChange={(e) => handleStudyChange(index, key, e.target.value)}
           label={label}
           name={key}
-          value={value || ""}
+          value={value || ''}
         />
       );
     }
@@ -75,8 +84,7 @@ const Studies = ({ next, prev, onSave }) => {
                   {studies.length > 1 && (
                     <button
                       onClick={() => removeStudy(index)}
-                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400"
-                    >
+                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
                       Remove
                     </button>
                   )}
@@ -89,8 +97,7 @@ const Studies = ({ next, prev, onSave }) => {
           ))}
           <button
             className="funcionality-button w-fit self-center"
-            onClick={addStudy}
-          >
+            onClick={addStudy}>
             Add new study
           </button>
         </div>
@@ -98,6 +105,12 @@ const Studies = ({ next, prev, onSave }) => {
       </div>
     </section>
   );
+};
+
+Studies.propTypes = {
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Studies;

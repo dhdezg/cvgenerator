@@ -1,18 +1,28 @@
-import { useState } from "react";
-import NavigationButtons from "./navigationButtons";
-import InputField from "./ui/inputField";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import NavigationButtons from './navigationButtons';
+import InputField from './ui/inputField';
 
 const WorkExperience = ({ next, prev, onSave }) => {
   const emptyExperience = {
-    companyName: "",
-    startDate: "",
-    endDate: "",
-    position: "",
-    technologies: "",
-    tasks: "",
+    companyName: '',
+    startDate: '',
+    endDate: '',
+    position: '',
+    technologies: '',
+    tasks: '',
   };
 
   const [experiences, setExperiences] = useState([{ ...emptyExperience }]);
+
+  useEffect(() => {
+    const savedData = JSON.parse(
+      localStorage.getItem('formData')
+    )?.workExperience;
+    if (savedData && savedData.length > 0) {
+      setExperiences(savedData);
+    }
+  }, []);
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
@@ -46,32 +56,35 @@ const WorkExperience = ({ next, prev, onSave }) => {
 
   const renderFormField = (key, value, index) => {
     const label = key
-      .replace(/([A-Z])/g, " $1")
+      .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (str) => str.toUpperCase());
 
-    if (key === "startDate" || key === "endDate") {
+    if (key === 'startDate' || key === 'endDate') {
       return (
         <InputField
           type="date"
           onChange={(e) => handleInputChange(index, e)}
           label={label}
           name={key}
-          value={value || ""}
+          value={value || ''}
           placeholder={
-            key === "endDate" ? "Leave empty if current position" : ""
+            key === 'endDate' ? 'Leave empty if current position' : ''
           }
         />
       );
-    } else if (key === "tasks") {
+    } else if (key === 'tasks') {
       return (
         <div className="flex flex-col col-span-3">
           <label className="mb-2">
             {label}
-            <span className="text-xs font-normal text-nowrap"> (separates with "." each task)</span>
+            <span className="text-xs font-normal text-nowrap">
+              {' '}
+              (separates with "." each task)
+            </span>
           </label>
           <textarea
             name={key}
-            value={value || ""}
+            value={value || ''}
             onChange={(e) => handleInputChange(index, e)}
             rows={4}
             placeholder="What are your main tasks in this position?"
@@ -79,7 +92,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           />
         </div>
       );
-    } else if (key === "technologies") {
+    } else if (key === 'technologies') {
       return (
         <div className="flex flex-col">
           <InputField
@@ -118,8 +131,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
                 {experiences.length > 1 && (
                   <button
                     onClick={() => removeExperience(index)}
-                    className="px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400"
-                  >
+                    className="px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
                     Remove
                   </button>
                 )}
@@ -128,8 +140,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
                 {Object.entries(experience).map(([key, value]) => (
                   <div
                     key={key}
-                    className={key === "tasks" ? "col-span-3" : ""}
-                  >
+                    className={key === 'tasks' ? 'col-span-3' : ''}>
                     {renderFormField(key, value, index)}
                   </div>
                 ))}
@@ -138,8 +149,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           ))}
           <button
             onClick={addExperience}
-            className="funcionality-button w-fit self-center"
-          >
+            className="funcionality-button w-fit self-center">
             Add another experience
           </button>
         </div>
@@ -147,6 +157,12 @@ const WorkExperience = ({ next, prev, onSave }) => {
       </div>
     </section>
   );
+};
+
+WorkExperience.propTypes = {
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default WorkExperience;

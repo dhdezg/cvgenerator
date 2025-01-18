@@ -1,12 +1,12 @@
-import { useState } from "react";
-import Languages from "./components/languages";
-import PersonalInfo from "./components/personalInfo";
-import Resume from "./components/resume";
-import Skills from "./components/skills";
-import Studies from "./components/studies";
-import Welcome from "./components/welcome";
-import WorkExperience from "./components/workExperience";
-import "./index.css";
+import { useEffect, useState } from 'react';
+import Languages from './components/languages';
+import PersonalInfo from './components/personalInfo';
+import Resume from './components/resume';
+import Skills from './components/skills';
+import Studies from './components/studies';
+import Welcome from './components/welcome';
+import WorkExperience from './components/workExperience';
+import './index.css';
 
 const App = () => {
   const STEPS = {
@@ -28,18 +28,27 @@ const App = () => {
     languages: [],
   });
 
-  const nextStep = () =>
-    setCurrentStep((prev) =>
-      prev < Object.keys(STEPS).length ? prev + 1 : prev
+  useEffect(() => {
+    localStorage.removeItem('formData');
+  }, []);
+
+  const nextStep = () => {
+    setCurrentStep(
+      currentStep < Object.keys(STEPS).length ? currentStep + 1 : currentStep
     );
-  const prevStep = () =>
-    setCurrentStep((prev) => (prev > STEPS.WELCOME ? prev - 1 : prev));
+  };
+
+  const prevStep = () => {
+    setCurrentStep(currentStep > STEPS.WELCOME ? currentStep - 1 : currentStep);
+  };
 
   const handleSave = (data, section) => {
-    setFormData((prev) => ({
-      ...prev,
+    const newFormData = {
+      ...formData,
       [section]: data,
-    }));
+    };
+    setFormData(newFormData);
+    localStorage.setItem('formData', JSON.stringify(newFormData));
   };
 
   const renderStep = () => {
@@ -51,7 +60,7 @@ const App = () => {
           <PersonalInfo
             next={nextStep}
             prev={prevStep}
-            onSave={(data) => handleSave(data, "personalInfo")}
+            onSave={(data) => handleSave(data, 'personalInfo')}
           />
         );
       case STEPS.WORK_EXPERIENCE:
@@ -59,7 +68,7 @@ const App = () => {
           <WorkExperience
             next={nextStep}
             prev={prevStep}
-            onSave={(data) => handleSave(data, "workExperience")}
+            onSave={(data) => handleSave(data, 'workExperience')}
           />
         );
       case STEPS.SKILLS:
@@ -67,7 +76,7 @@ const App = () => {
           <Skills
             next={nextStep}
             prev={prevStep}
-            onSave={(data) => handleSave(data, "skills")}
+            onSave={(data) => handleSave(data, 'skills')}
           />
         );
       case STEPS.STUDIES:
@@ -75,7 +84,7 @@ const App = () => {
           <Studies
             next={nextStep}
             prev={prevStep}
-            onSave={(data) => handleSave(data, "studies")}
+            onSave={(data) => handleSave(data, 'studies')}
           />
         );
       case STEPS.LANGUAGES:
@@ -83,7 +92,7 @@ const App = () => {
           <Languages
             next={nextStep}
             prev={prevStep}
-            onSave={(data) => handleSave(data, "languages")}
+            onSave={(data) => handleSave(data, 'languages')}
           />
         );
       case STEPS.RESUME:
@@ -102,8 +111,7 @@ const App = () => {
         Done with ❤️ by&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
-          className="hover:text-squirtle-950 hover:underline"
-        >
+          className="hover:text-squirtle-950 hover:underline">
           dario.dev
         </a>
       </footer>
