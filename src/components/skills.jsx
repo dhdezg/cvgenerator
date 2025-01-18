@@ -1,12 +1,21 @@
-import { useState } from "react";
-import NavigationButtons from "./navigationButtons";
-import InputField from "./ui/inputField";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import NavigationButtons from './navigationButtons';
+import InputField from './ui/inputField';
 
 const Skills = ({ next, prev, onSave }) => {
   const emptySkill = {
-    name: "",
+    name: '',
   };
   const [skills, setSkills] = useState([emptySkill]);
+
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem('formData'))?.skills;
+    if (savedData && savedData.length > 0) {
+      setSkills(savedData);
+    }
+  }, []);
+
   const addSkill = () => {
     setSkills((prev) => [...prev, { ...emptySkill }]);
   };
@@ -48,8 +57,7 @@ const Skills = ({ next, prev, onSave }) => {
                   {skills.length > 1 && (
                     <button
                       onClick={() => removeSkill(index)}
-                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400"
-                    >
+                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
                       Remove
                     </button>
                   )}
@@ -59,7 +67,7 @@ const Skills = ({ next, prev, onSave }) => {
                   name={`skill-${index}`}
                   value={skill.name}
                   onChange={(e) =>
-                    handleSkillChange(index, "name", e.target.value)
+                    handleSkillChange(index, 'name', e.target.value)
                   }
                 />
               </div>
@@ -67,8 +75,7 @@ const Skills = ({ next, prev, onSave }) => {
           ))}
           <button
             className="funcionality-button w-fit self-center"
-            onClick={addSkill}
-          >
+            onClick={addSkill}>
             Add new skill
           </button>
         </div>
@@ -76,6 +83,12 @@ const Skills = ({ next, prev, onSave }) => {
       </div>
     </section>
   );
+};
+
+Skills.propTypes = {
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Skills;

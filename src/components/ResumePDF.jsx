@@ -1,5 +1,5 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import React from "react";
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import {
   formatDate,
   hasValidLanguages,
@@ -7,28 +7,28 @@ import {
   hasValidSkills,
   hasValidStudies,
   hasValidWorkExperience,
-} from "../helper";
+} from '../helper';
 
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    color: "#000000",
-    fontFamily: "Helvetica",
+    color: '#000000',
+    fontFamily: 'Helvetica',
     lineHeight: 1.5,
     fontSize: 11,
   },
   personalInfo: {
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 20,
   },
   name: {
     fontSize: 12,
-    textAlign: "center",
-    fontFamily: "Helvetica-Bold",
+    textAlign: 'center',
+    fontFamily: 'Helvetica-Bold',
   },
   personalInfoText: {
     fontSize: 11,
-    color: "#000000",
+    color: '#000000',
     marginBottom: 5,
   },
   section: {
@@ -37,49 +37,48 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 12,
     marginBottom: 2,
-    fontFamily: "Helvetica-Bold",
-    color: "#000000",
-    textAlign: "center",
+    fontFamily: 'Helvetica-Bold',
+    color: '#000000',
+    textAlign: 'center',
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     marginBottom: 2,
   },
   textBold: {
     fontSize: 11,
-    fontFamily: "Helvetica-Bold",
-    color: "#000000",
+    fontFamily: 'Helvetica-Bold',
+    color: '#000000',
   },
   text: {
     fontSize: 11,
-    color: "#000000",
+    color: '#000000',
   },
   listItem: {
     marginBottom: 4,
     paddingLeft: 4,
-    textAlign: "left",
+    textAlign: 'left',
   },
   divider: {
     marginVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: "#000000",
+    borderBottomColor: '#000000',
   },
   columnContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     gap: 2,
   },
   columnItem: {
-    width: "33%",
+    width: '33%',
     marginBottom: 2,
   },
 });
 
 const ResumePDF = ({ data }) => {
   const { personalInfo, workExperience, skills, languages, studies } = data;
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -104,31 +103,40 @@ const ResumePDF = ({ data }) => {
             <View style={styles.divider} />
             {workExperience.map((work, workIndex) => (
               <View key={workIndex} style={{ marginBottom: 10 }}>
-                <View style={[styles.row, { justifyContent: "space-between" }]}>
+                <View style={[styles.row, { justifyContent: 'space-between' }]}>
                   <Text style={styles.textBold}>{work.companyName}</Text>
                   <Text style={styles.text}>
-                    {formatDate(work.startDate)} -{" "}
-                    {work.endDate ? formatDate(work.endDate) : "Present"}
+                    {formatDate(work.startDate)} -{' '}
+                    {work.endDate ? formatDate(work.endDate) : 'Present'}
                   </Text>
                 </View>
                 <Text
-                  style={(styles.text, { fontFamily: "Helvetica-Oblique" })}
-                >
+                  style={(styles.text, { fontFamily: 'Helvetica-Oblique' })}>
                   {work.position}
                 </Text>
 
-                <Text style={styles.textBold}>Used technologies:</Text>
-                <View style={[styles.columnContainer, { marginLeft: 10 }]}>
-                  {work.technologies.split(",").map((technology, index) => (
-                    <Text key={index} style={styles.columnItem}>
-                      • {technology.trim()}
-                    </Text>
-                  ))}
-                </View>
+                {work.technologies &&
+                  work.technologies.trim().length > 0 &&
+                  work.technologies !== ',' && (
+                    <>
+                      <Text style={styles.textBold}>Used technologies:</Text>
+                      <View
+                        style={[styles.columnContainer, { marginLeft: 10 }]}>
+                        {work.technologies
+                          .split(',')
+                          .filter((tech) => tech.trim().length > 0)
+                          .map((technology, index) => (
+                            <Text key={index} style={styles.columnItem}>
+                              • {technology.trim()}
+                            </Text>
+                          ))}
+                      </View>
+                    </>
+                  )}
 
                 <Text style={styles.textBold}>Tasks:</Text>
                 <View style={{ marginLeft: 10 }}>
-                  {work.tasks.split(".").map(
+                  {work.tasks.split('.').map(
                     (task, index) =>
                       task.trim() && (
                         <Text key={index} style={styles.listItem}>
@@ -164,8 +172,8 @@ const ResumePDF = ({ data }) => {
             <View style={styles.divider} />
             {languages.map((language, index) => (
               <Text key={index} style={styles.listItem}>
-                • {language.language}: {language.level}{" "}
-                {language.institution ? `(${language.institution})` : ""}
+                • {language.language}: {language.level}{' '}
+                {language.institution ? `(${language.institution})` : ''}
               </Text>
             ))}
           </View>
@@ -179,7 +187,7 @@ const ResumePDF = ({ data }) => {
             {studies.map((study, index) => (
               <View key={index} style={{ marginBottom: 10 }}>
                 <Text style={styles.textBold}>{study.schoolName}</Text>
-                <View style={[styles.row, { justifyContent: "space-between" }]}>
+                <View style={[styles.row, { justifyContent: 'space-between' }]}>
                   <Text style={styles.text}>{study.degree}</Text>
                   <Text style={styles.text}>{formatDate(study.endDate)}</Text>
                 </View>
@@ -190,6 +198,10 @@ const ResumePDF = ({ data }) => {
       </Page>
     </Document>
   );
+};
+
+ResumePDF.propTypes = {
+  data: PropTypes.object.isRequired,
 };
 
 export default ResumePDF;
