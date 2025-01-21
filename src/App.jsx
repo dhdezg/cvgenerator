@@ -51,6 +51,18 @@ const App = () => {
     localStorage.setItem('formData', JSON.stringify(newFormData));
   };
 
+  const goHome = () => {
+    setCurrentStep(STEPS.WELCOME);
+    setFormData({
+      personalInfo: {},
+      workExperience: [],
+      skills: [],
+      studies: [],
+      languages: [],
+    });
+    localStorage.removeItem('formData');
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case STEPS.WELCOME:
@@ -104,6 +116,9 @@ const App = () => {
 
   return (
     <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
+      <div className="flex justify-between items-center">
+        <button onClick={goHome}>GO HOME</button>
+      </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {renderStep()}
       </main>
