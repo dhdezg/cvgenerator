@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import NavigationButtons from './navigationButtons';
+import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
+import NavigationButtons from './ui/navigationButtons';
 
 const WorkExperience = ({ next, prev, onSave }) => {
+  const { t } = useTranslation();
   const emptyExperience = {
     companyName: '',
     startDate: '',
@@ -55,9 +57,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
   };
 
   const renderFormField = (key, value, index) => {
-    const label = key
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, (str) => str.toUpperCase());
+    const label = t(key);
 
     if (key === 'startDate' || key === 'endDate') {
       return (
@@ -67,9 +67,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           label={label}
           name={key}
           value={value || ''}
-          placeholder={
-            key === 'endDate' ? 'Leave empty if current position' : ''
-          }
+          t={t}
         />
       );
     } else if (key === 'tasks') {
@@ -77,9 +75,8 @@ const WorkExperience = ({ next, prev, onSave }) => {
         <div className="flex flex-col col-span-3">
           <label className="xs:text-sm md:text-lg mb-2">
             {label}
-            <span className="mdtext-xs font-normal xs:text-2xs md:text-nowrap">
-              {' '}
-              (separates with "." each task)
+            <span className="md:text-xs font-normal xs:text-2xs md:text-nowrap">
+              {t('tasksClarification')}
             </span>
           </label>
           <textarea
@@ -87,7 +84,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
             value={value || ''}
             onChange={(e) => handleInputChange(index, e)}
             rows={4}
-            placeholder="What are your main tasks in this position?"
+            placeholder={t('placeholders.tasks')}
             className="xs:placeholder:text-xs md:placeholder:text-sm bg-squirtle-100 p-2 border rounded-md font-normal focus:outline-none focus:ring-2 focus:ring-squirtle-500"
           />
         </div>
@@ -97,10 +94,11 @@ const WorkExperience = ({ next, prev, onSave }) => {
         <div className="flex flex-col">
           <InputField
             label={label}
-            clarificationMessage="(separates with ',' each technology)"
+            clarificationMessage={t('technologiesClarification')}
             onChange={(e) => handleInputChange(index, e)}
             name={key}
             value={value}
+            t={t}
           />
         </div>
       );
@@ -113,6 +111,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
         label={label}
         name={key}
         value={value}
+        t={t}
       />
     );
   };
@@ -120,19 +119,19 @@ const WorkExperience = ({ next, prev, onSave }) => {
   return (
     <section id="workExperience" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Work experience</h2>
+        <h2 className="step-title">{t('workExperienceTitle')}</h2>
         <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {experiences.map((experience, index) => (
             <div key={index} className="card">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-squirtle-950 xs:text-base md:text-lg font-semibold">
-                  Experience {index + 1}
+                  {t('experience')} {index + 1}
                 </h3>
                 {experiences.length > 1 && (
                   <button
                     onClick={() => removeExperience(index)}
                     className="px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
-                    Remove
+                    {t('remove')}
                   </button>
                 )}
               </div>
@@ -150,7 +149,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
           <button
             onClick={addExperience}
             className="funcionality-button w-fit self-center">
-            Add another experience
+            {t('addExperience')}
           </button>
         </div>
         <NavigationButtons onNext={handleNext} onPrev={handlePrev} />

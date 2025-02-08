@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import NavigationButtons from './navigationButtons';
+import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
+import NavigationButtons from './ui/navigationButtons';
 
 const Languages = ({ next, prev, onSave }) => {
+  const { t } = useTranslation();
   const emptyLanguage = {
     language: '',
     level: '',
@@ -42,20 +44,20 @@ const Languages = ({ next, prev, onSave }) => {
   return (
     <section id="languages" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Your known languages</h2>
+        <h2 className="step-title">{t('languageTitle')}</h2>
         <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {languages.map((language, index) => (
             <div key={index}>
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
                   <h3 className="text-squirtle-950 xs:text-base md:text-lg font-semibold">
-                    Language {index + 1}
+                    {t('language')} {index + 1}
                   </h3>
                   {languages.length > 1 && (
                     <button
                       onClick={() => removeLanguage(index)}
                       className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
-                      Remove
+                      {t('remove')}
                     </button>
                   )}
                 </div>
@@ -63,11 +65,10 @@ const Languages = ({ next, prev, onSave }) => {
                   <InputField
                     key={`${index}-${key}`}
                     onChange={(e) => handleLanguageChange(index, e)}
-                    label={key
-                      .replace(/([A-Z])/g, ' $1')
-                      .replace(/^./, (str) => str.toUpperCase())}
+                    label={t(key)}
                     name={key}
                     value={value || ''}
+                    t={t}
                   />
                 ))}
               </div>
@@ -76,7 +77,7 @@ const Languages = ({ next, prev, onSave }) => {
           <button
             onClick={addLanguage}
             className="funcionality-button w-fit self-center">
-            Add another language
+            {t('addLanguage')}
           </button>
         </div>
         <NavigationButtons onNext={handleNext} onPrev={handlePrev} />

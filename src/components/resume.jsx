@@ -1,5 +1,6 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   hasValidLanguages,
   hasValidPersonalInfo,
@@ -7,27 +8,28 @@ import {
   hasValidStudies,
   hasValidWorkExperience,
 } from '../helper';
-import NavigationButtons from './navigationButtons';
 import ResumePDF from './ResumePDF';
+import NavigationButtons from './ui/navigationButtons';
 
 const Resume = ({ data, prev }) => {
+  const { t } = useTranslation();
   const { personalInfo, workExperience, skills, languages, studies } = data;
 
   return (
     <section id="resume" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Your Resume</h2>
+        <h2 className="step-title">{t('resumeTitle')}</h2>
         <div className="xs:w-full md:w-3/4 space-y-6">
           {/* Personal Info Section */}
           {hasValidPersonalInfo(personalInfo) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
-                Personal Information
+                {t('personalInfo')}
               </h3>
               <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
                 {Object.entries(personalInfo).map(([key, value]) => (
                   <div key={key}>
-                    <span className="font-bold">{key}: </span>
+                    <span className="font-bold">{t(key)}: </span>
                     <span className="xs:text-base md:text-base">{value}</span>
                   </div>
                 ))}
@@ -39,7 +41,7 @@ const Resume = ({ data, prev }) => {
           {hasValidWorkExperience(workExperience) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
-                Work Experience
+                {t('workExperienceTitle')}
               </h3>
               {workExperience.map((exp, index) => (
                 <div key={index} className="mb-4">
@@ -57,7 +59,9 @@ const Resume = ({ data, prev }) => {
           {/* Skills Section */}
           {hasValidSkills(skills) && (
             <div className="card">
-              <h3 className="xs:text-lg md:text-xl font-bold mb-4">Skills</h3>
+              <h3 className="xs:text-lg md:text-xl font-bold mb-4">
+                {t('skills')}
+              </h3>
               <div className="xs:flex flex-col md:grid grid-cols-4 gap-4">
                 {skills.map((skill, index) => (
                   <div key={index}>
@@ -72,7 +76,7 @@ const Resume = ({ data, prev }) => {
           {hasValidLanguages(languages) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
-                Languages
+                {t('languages')}
               </h3>
               <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
                 {languages.map((language, index) => (
@@ -89,7 +93,7 @@ const Resume = ({ data, prev }) => {
           {hasValidStudies(studies) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
-                Education
+                {t('education')}
               </h3>
               {studies.map((study, index) => (
                 <div key={index} className="mb-4">
@@ -112,7 +116,7 @@ const Resume = ({ data, prev }) => {
               fileName="resume.pdf"
               className="text-nowrap text-center">
               {({ loading }) => (
-                <p>{loading ? 'Loading document...' : 'Download resume'}</p>
+                <p>{loading ? 'Loading document...' : t('download')}</p>
               )}
             </PDFDownloadLink>
           </div>

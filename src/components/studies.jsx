@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import NavigationButtons from './navigationButtons';
+import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
+import NavigationButtons from './ui/navigationButtons';
 
 const Studies = ({ next, prev, onSave }) => {
+  const { t } = useTranslation();
   const emptyStudy = {
     schoolName: '',
     degree: '',
@@ -42,9 +44,7 @@ const Studies = ({ next, prev, onSave }) => {
   };
 
   const renderFormField = (key, value, index) => {
-    const label = key
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, (str) => str.toUpperCase());
+    const label = t(key);
 
     if (key === 'startDate' || key === 'endDate') {
       return (
@@ -55,6 +55,7 @@ const Studies = ({ next, prev, onSave }) => {
           label={label}
           name={key}
           value={value || ''}
+          t={t}
         />
       );
     }
@@ -65,6 +66,7 @@ const Studies = ({ next, prev, onSave }) => {
         label={label}
         name={key}
         value={value}
+        t={t}
       />
     );
   };
@@ -72,20 +74,20 @@ const Studies = ({ next, prev, onSave }) => {
   return (
     <section id="studies" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Your studies</h2>
+        <h2 className="step-title">{t('studiesTitle')}</h2>
         <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {studies.map((study, index) => (
             <div key={index}>
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
                   <h3 className="text-squirtle-950 text-lg font-semibold">
-                    Study {index + 1}
+                    {t('study')} {index + 1}
                   </h3>
                   {studies.length > 1 && (
                     <button
                       onClick={() => removeStudy(index)}
                       className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
-                      Remove
+                      {t('remove')}
                     </button>
                   )}
                 </div>
@@ -98,7 +100,7 @@ const Studies = ({ next, prev, onSave }) => {
           <button
             className="funcionality-button w-fit self-center"
             onClick={addStudy}>
-            Add new study
+            {t('addStudy')}
           </button>
         </div>
         <NavigationButtons onNext={handleNext} onPrev={handlePrev} />

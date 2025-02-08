@@ -1,17 +1,23 @@
-
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
-const NavigationButtons = ({ onNext, onPrev, showPrev = true, showNext = true }) => {
+const NavigationButtons = ({
+  onNext,
+  onPrev,
+  showPrev = true,
+  showNext = true,
+}) => {
+  const { t } = useTranslation();
   return (
-    <div className="flex justify-between mt-6">
+    <div className="flex justify-evenly gap-20 w-full">
       {showPrev && (
         <button onClick={onPrev} className="button-base">
-          Previous step
+          {t('prevStep')}
         </button>
       )}
       {showNext && (
-        <button onClick={onNext} className="button-base ml-auto">
-          Next step
+        <button onClick={onNext} className="button-base">
+          {t('nextStep')}
         </button>
       )}
     </div>
@@ -19,8 +25,8 @@ const NavigationButtons = ({ onNext, onPrev, showPrev = true, showNext = true })
 };
 
 NavigationButtons.propTypes = {
-  onNext: PropTypes.func.isRequired,
-  onPrev: PropTypes.func.isRequired,
+  onNext: PropTypes.func,
+  onPrev: PropTypes.func,
   showPrev: PropTypes.bool,
   showNext: PropTypes.bool,
 };

@@ -7,6 +7,7 @@ const InputField = ({
   value,
   onChange,
   type = 'text',
+  t,
 }) => {
   return (
     <div className="flex flex-col gap-2">
@@ -23,7 +24,7 @@ const InputField = ({
         name={name}
         value={value}
         onChange={onChange}
-        placeholder={`Here should be your ${label}`}
+        placeholder={t(`placeholders.${name}`)}
         className="input-form"
       />
     </div>
@@ -37,6 +38,7 @@ InputField.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 export default InputField;
