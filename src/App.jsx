@@ -13,6 +13,7 @@ import './index.css';
 
 const App = () => {
   const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || 'es');
 
   const STEPS = {
@@ -139,17 +140,17 @@ const App = () => {
     <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
       <div id="header" className="flex justify-between items-center p-5">
         <button onClick={goHome}>
-          <House size={24} />
+          <House size={24} color="#083444" />
         </button>
         <button onClick={toggleLanguage}>
-          <Globe size={24} />
+          <Globe size={24} color="#083444" />
         </button>
       </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {renderStep()}
       </main>
       <footer className="mx-auto">
-        Done with ❤️ by&nbsp;
+        {t('footerText')}&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
           className="hover:text-squirtle-950 hover:underline">

@@ -63,6 +63,7 @@ const resources = {
       download: 'Download resume',
       resumeTitle: 'Your resume',
       experience: 'Experience',
+      footerText: 'Done with ❤️ by',
     },
   },
   es: {
@@ -127,6 +128,7 @@ const resources = {
       download: 'Descargar CV',
       resumeTitle: 'Tu currículum',
       experience: 'Experiencia',
+      footerText: 'Hecho con ❤️ por',
     },
   },
 };
