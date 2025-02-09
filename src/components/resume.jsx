@@ -112,8 +112,23 @@ const Resume = ({ data, prev }) => {
 
           <div className="funcionality-button flex items-center">
             <PDFDownloadLink
-              document={<ResumePDF data={data} />}
-              fileName="resume.pdf"
+              document={
+                <ResumePDF
+                  data={data}
+                  translations={{
+                    resumeTitle: t('resumeTitle'),
+                    personalInfo: t('personalInfo'),
+                    workExperienceTitle: t('workExperienceTitle'),
+                    skills: t('skills'),
+                    languages: t('languages'),
+                    education: t('education'),
+                    usedTechs: t('usedTechs'),
+                    tasks: t('tasks'),
+                    present: t('present'),
+                  }}
+                />
+              }
+              fileName={`resume_${personalInfo.fullName}.pdf`}
               className="text-nowrap text-center">
               {({ loading }) => (
                 <p>{loading ? 'Loading document...' : t('download')}</p>
