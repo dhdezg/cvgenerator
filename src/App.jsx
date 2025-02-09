@@ -1,4 +1,7 @@
+import { Globe, House } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../i18n.js';
 import Languages from './components/languages';
 import PersonalInfo from './components/personalInfo';
 import Resume from './components/resume';
@@ -9,6 +12,10 @@ import WorkExperience from './components/workExperience';
 import './index.css';
 
 const App = () => {
+  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language || 'es');
+
   const STEPS = {
     WELCOME: 1,
     PERSONAL_INFO: 2,
@@ -50,6 +57,33 @@ const App = () => {
     setFormData(newFormData);
     localStorage.setItem('formData', JSON.stringify(newFormData));
   };
+
+  const goHome = () => {
+    setCurrentStep(STEPS.WELCOME);
+    setFormData({
+      personalInfo: {},
+      workExperience: [],
+      skills: [],
+      studies: [],
+      languages: [],
+    });
+    localStorage.removeItem('formData');
+  };
+
+  const toggleLanguage = () => {
+    const newLang = language === 'en' ? 'es' : 'en';
+    setLanguage(newLang);
+    i18n.changeLanguage(newLang);
+    localStorage.setItem('language', newLang);
+  };
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+      setLanguage(savedLanguage);
+    }
+  }, [i18n]);
 
   const renderStep = () => {
     switch (currentStep) {
@@ -104,11 +138,19 @@ const App = () => {
 
   return (
     <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
+      <div id="header" className="flex justify-between items-center p-5">
+        <button onClick={goHome}>
+          <House size={24} color="#083444" />
+        </button>
+        <button onClick={toggleLanguage}>
+          <Globe size={24} color="#083444" />
+        </button>
+      </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {renderStep()}
       </main>
       <footer className="mx-auto">
-        Done with ❤️ by&nbsp;
+        {t('footerText')}&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
           className="hover:text-squirtle-950 hover:underline">

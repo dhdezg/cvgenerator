@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ResumePDF = ({ data }) => {
+const ResumePDF = ({ data, translations }) => {
   const { personalInfo, workExperience, skills, languages, studies } = data;
   return (
     <Document>
@@ -99,7 +99,9 @@ const ResumePDF = ({ data }) => {
         {/* Work Experience */}
         {hasValidWorkExperience(workExperience) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Work Experience</Text>
+            <Text style={styles.sectionTitle}>
+              {translations.workExperienceTitle}
+            </Text>
             <View style={styles.divider} />
             {workExperience.map((work, workIndex) => (
               <View key={workIndex} style={{ marginBottom: 10 }}>
@@ -107,7 +109,9 @@ const ResumePDF = ({ data }) => {
                   <Text style={styles.textBold}>{work.companyName}</Text>
                   <Text style={styles.text}>
                     {formatDate(work.startDate)} -{' '}
-                    {work.endDate ? formatDate(work.endDate) : 'Present'}
+                    {work.endDate
+                      ? formatDate(work.endDate)
+                      : translations.present}
                   </Text>
                 </View>
                 <Text
@@ -119,7 +123,9 @@ const ResumePDF = ({ data }) => {
                   work.technologies.trim().length > 0 &&
                   work.technologies !== ',' && (
                     <>
-                      <Text style={styles.textBold}>Used technologies:</Text>
+                      <Text style={styles.textBold}>
+                        {translations.usedTechs}:
+                      </Text>
                       <View
                         style={[styles.columnContainer, { marginLeft: 10 }]}>
                         {work.technologies
@@ -134,7 +140,7 @@ const ResumePDF = ({ data }) => {
                     </>
                   )}
 
-                <Text style={styles.textBold}>Tasks:</Text>
+                <Text style={styles.textBold}>{translations.tasks}:</Text>
                 <View style={{ marginLeft: 10 }}>
                   {work.tasks.split('.').map(
                     (task, index) =>
@@ -153,7 +159,7 @@ const ResumePDF = ({ data }) => {
         {/* Skills */}
         {hasValidSkills(skills) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Skills</Text>
+            <Text style={styles.sectionTitle}>{translations.skills}</Text>
             <View style={styles.divider} />
             <View style={styles.columnContainer}>
               {skills.map((skill, index) => (
@@ -168,7 +174,7 @@ const ResumePDF = ({ data }) => {
         {/* Languages */}
         {hasValidLanguages(languages) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Languages</Text>
+            <Text style={styles.sectionTitle}>{translations.languages}</Text>
             <View style={styles.divider} />
             {languages.map((language, index) => (
               <Text key={index} style={styles.listItem}>
@@ -182,7 +188,7 @@ const ResumePDF = ({ data }) => {
         {/* Studies */}
         {hasValidStudies(studies) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
+            <Text style={styles.sectionTitle}>{translations.education}</Text>
             <View style={styles.divider} />
             {studies.map((study, index) => (
               <View key={index} style={{ marginBottom: 10 }}>
@@ -202,6 +208,7 @@ const ResumePDF = ({ data }) => {
 
 ResumePDF.propTypes = {
   data: PropTypes.object.isRequired,
+  translations: PropTypes.object,
 };
 
 export default ResumePDF;

@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import NavigationButtons from './navigationButtons';
+import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
+import NavigationButtons from './ui/navigationButtons';
 
 const Skills = ({ next, prev, onSave }) => {
+  const { t } = useTranslation();
   const emptySkill = {
     name: '',
   };
@@ -45,7 +47,7 @@ const Skills = ({ next, prev, onSave }) => {
   return (
     <section id="skills" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Your skills</h2>
+        <h2 className="step-title">{t('skillsTitle')}</h2>
         <div
           id="steps-container"
           className="flex flex-col gap-4 xs:w-full md:w-3/4">
@@ -54,23 +56,24 @@ const Skills = ({ next, prev, onSave }) => {
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
                   <h3 className="text-squirtle-950 text-lg font-semibold">
-                    Skill {index + 1}
+                    {t('skill')} {index + 1}
                   </h3>
                   {skills.length > 1 && (
                     <button
                       onClick={() => removeSkill(index)}
                       className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
-                      Remove
+                      {t('remove')}
                     </button>
                   )}
                 </div>
                 <InputField
-                  label="Skill Name"
-                  name={`skill-${index}`}
+                  label={t('skillName')}
+                  name="skill"
                   value={skill.name}
                   onChange={(e) =>
                     handleSkillChange(index, 'name', e.target.value)
                   }
+                  t={t}
                 />
               </div>
             </div>
@@ -78,7 +81,7 @@ const Skills = ({ next, prev, onSave }) => {
           <button
             className="funcionality-button w-fit self-center"
             onClick={addSkill}>
-            Add new skill
+            {t('addSkill')}
           </button>
         </div>
         <NavigationButtons onNext={handleNext} onPrev={handlePrev} />

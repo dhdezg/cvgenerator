@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import NavigationButtons from './navigationButtons';
+import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
+import NavigationButtons from './ui/navigationButtons';
 
 const PersonalInfo = ({ next, onSave }) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -37,17 +40,16 @@ const PersonalInfo = ({ next, onSave }) => {
   return (
     <section id="personalInfo" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">Your personal data</h2>
+        <h2 className="step-title">{t('personalInfoTitle')}</h2>
         <div className="card xs:w-full md:w-3/4 xs:flex flex-col md:grid grid-cols-3 xs:gap-4 md:gap-6 font-bold text-squirtle-950">
           {Object.keys(formData).map((key) => (
             <InputField
               key={key}
               onChange={handleInputChange}
-              label={key
-                .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, (str) => str.toUpperCase())}
+              label={t(key)}
               name={key}
               value={formData[key]}
+              t={t}
             />
           ))}
         </div>
