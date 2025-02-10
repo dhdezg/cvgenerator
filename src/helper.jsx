@@ -1,21 +1,12 @@
+import i18n from '../i18n';
+
 export const formatDate = (dateString) => {
   if (!dateString) return '';
 
   const date = new Date(dateString);
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+  if (isNaN(date)) return '';
+
+  const monthNames = i18n.t('months', { returnObjects: true });
 
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();

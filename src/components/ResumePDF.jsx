@@ -195,7 +195,11 @@ const ResumePDF = ({ data, translations }) => {
                 <Text style={styles.textBold}>{study.schoolName}</Text>
                 <View style={[styles.row, { justifyContent: 'space-between' }]}>
                   <Text style={styles.text}>{study.degree}</Text>
-                  <Text style={styles.text}>{formatDate(study.endDate)}</Text>
+                  <Text style={styles.text}>
+                    {study.endDate
+                      ? formatDate(study.endDate)
+                      : translations.present}
+                  </Text>
                 </View>
               </View>
             ))}
