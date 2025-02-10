@@ -2,6 +2,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import {
+  formatDate,
   hasValidLanguages,
   hasValidPersonalInfo,
   hasValidSkills,
@@ -48,7 +49,8 @@ const Resume = ({ data, prev }) => {
                   <h4 className="font-bold">{exp.companyName}</h4>
                   <p>{exp.position}</p>
                   <p>
-                    {exp.startDate} / {exp.endDate ? exp.endDate : 'Present'}
+                    {formatDate(exp.startDate)} /{' '}
+                    {exp.endDate ? formatDate(exp.endDate) : 'Present'}
                   </p>
                   <p>{exp.tasks}</p>
                 </div>
@@ -100,7 +102,8 @@ const Resume = ({ data, prev }) => {
                   <h4 className="font-bold">{study.schoolName}</h4>
                   <p>{study.degree}</p>
                   <p>
-                    {study.startDate} / {study.endDate}
+                    {formatDate(study.startDate)} /{' '}
+                    {study.endDate ? formatDate(study.endDate) : t('present')}
                   </p>
                 </div>
               ))}
