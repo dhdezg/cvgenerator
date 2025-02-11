@@ -80,7 +80,7 @@ const Studies = ({ next, prev, onSave }) => {
             <div key={index}>
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
-                  <h3 className="text-midnight-950 text-lg font-semibold">
+                  <h3 className="text-midnight-100 text-lg font-semibold">
                     {t('study')} {index + 1}
                   </h3>
                   {studies.length > 1 && (

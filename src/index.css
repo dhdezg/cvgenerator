@@ -9,14 +9,14 @@
 }
 @layer components {
   .input-base {
-    @apply p-3 border-2 rounded-2xl bg-midnight-100 border-midnight-700 focus:ring-2 focus:ring-midnight-800 focus:outline-none text-midnight-700;
+    @apply p-3 border-2 rounded-2xl bg-midnight-100 border-midnight-700 focus:ring-2 focus:ring-midnight-800 focus:outline-none text-midnight-950;
   }
   .input-disabled {
     @apply bg-midnight-50 border-midnight-400 text-midnight-200 cursor-not-allowed opacity-80;
   }
 
   .input-form {
-    @apply text-midnight-900 bg-midnight-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-midnight-200 rounded-md focus:outline-none focus:ring-2 focus:ring-midnight-500;
+    @apply text-midnight-950 bg-midnight-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-midnight-200 rounded-md focus:outline-none focus:ring-2 focus:ring-midnight-500;
   }
 
   .button-base {
@@ -39,7 +39,15 @@
     @apply xs:text-2xl md:text-5xl text-midnight-100 font-bold select-none;
   }
 
-  .card {
-    @apply xs:p-6 md:p-10 border-2 border-midnight-800 rounded-lg bg-midnight-200;
-  }
+  
+}
+
+.card {
+  padding: 1.5rem;
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  background-color: rgba(0, 66, 179, 0.193);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  color: #cef0ff;
 }
