@@ -80,6 +80,8 @@ const resources = {
         'November',
         'December',
       ],
+      preview: 'Do you want a preview?',
+      clickMe: 'Click here!',
     },
   },
   es: {
@@ -161,6 +163,8 @@ const resources = {
         'Noviembre',
         'Diciembre',
       ],
+      preview: 'Quieres ver un adelanto?',
+      clickMe: 'Pulsa aquí!',
     },
   },
 };
