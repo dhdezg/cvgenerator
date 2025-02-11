@@ -50,13 +50,13 @@ const Languages = ({ next, prev, onSave }) => {
             <div key={index}>
               <div className="card flex flex-col gap-4">
                 <div className="flex justify-between items-center gap-4">
-                  <h3 className="text-squirtle-950 xs:text-base md:text-lg font-semibold">
+                  <h3 className="text-midnight-950 xs:text-base md:text-lg font-semibold">
                     {t('language')} {index + 1}
                   </h3>
                   {languages.length > 1 && (
                     <button
                       onClick={() => removeLanguage(index)}
-                      className="w-fit self-end px-3 py-1 text-squirtle-50 bg-squirtle-600 rounded-md hover:bg-squirtle-400">
+                      className="w-fit self-end px-3 py-1 text-midnight-50 bg-midnight-600 rounded-md hover:bg-midnight-400">
                       {t('remove')}
                     </button>
                   )}

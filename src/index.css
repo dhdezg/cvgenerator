@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,22 +9,22 @@
 }
 @layer components {
   .input-base {
-    @apply p-3 border-2 rounded-2xl bg-squirtle-100 border-squirtle-700 focus:ring-2 focus:ring-squirtle-800 focus:outline-none text-squirtle-700;
+    @apply p-3 border-2 rounded-2xl bg-midnight-100 border-midnight-700 focus:ring-2 focus:ring-midnight-800 focus:outline-none text-midnight-700;
   }
   .input-disabled {
-    @apply bg-squirtle-50 border-squirtle-400 text-squirtle-200 cursor-not-allowed opacity-80;
+    @apply bg-midnight-50 border-midnight-400 text-midnight-200 cursor-not-allowed opacity-80;
   }
 
   .input-form {
-    @apply text-squirtle-900 bg-squirtle-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-squirtle-200 rounded-md focus:outline-none focus:ring-2 focus:ring-squirtle-500;
+    @apply text-midnight-900 bg-midnight-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-midnight-200 rounded-md focus:outline-none focus:ring-2 focus:ring-midnight-500;
   }
 
   .button-base {
-    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-5 min-w-28 xs:text-base md:text-xl text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
+    @apply bg-midnight-800 hover:bg-midnight-600 hover:scale-125 rounded-full p-5 min-w-28 xs:text-base md:text-xl text-midnight-50 shadow-lg shadow-midnight-700 transition-all duration-300;
   }
 
   .funcionality-button {
-    @apply bg-squirtle-700 hover:bg-squirtle-600 hover:scale-125 rounded-full p-3 xs:text-base md:text-lg text-squirtle-50 shadow-lg shadow-squirtle-600 transition-all duration-300;
+    @apply bg-midnight-800 hover:bg-midnight-600 hover:scale-125 rounded-full p-3 xs:text-base md:text-lg text-midnight-50 shadow-lg shadow-midnight-700 transition-all duration-300;
   }
 
   .form {
@@ -36,10 +36,10 @@
   }
 
   .step-title {
-    @apply xs:text-2xl md:text-5xl text-squirtle-950 font-bold select-none;
+    @apply xs:text-2xl md:text-5xl text-midnight-100 font-bold select-none;
   }
 
   .card {
-    @apply xs:p-6 md:p-10 border-2 border-squirtle-600 rounded-lg bg-squirtle-200;
+    @apply xs:p-6 md:p-10 border-2 border-midnight-800 rounded-lg bg-midnight-200;
   }
 }

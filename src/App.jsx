@@ -137,23 +137,29 @@ const App = () => {
   };
 
   return (
-    <div className="font-poppins bg-gradient-to-br from-squirtle-800 to-squirtle-200 min-h-screen flex flex-col w-full">
+    <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full">
       <div id="header" className="flex justify-between items-center p-5">
         <button onClick={goHome}>
-          <House size={24} color="#083444" />
+          <House
+            size={36}
+            className="stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2"
+          />
         </button>
         <button onClick={toggleLanguage}>
-          <Globe size={24} color="#083444" />
+          <Globe
+            size={36}
+            className="stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2"
+          />
         </button>
       </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {renderStep()}
       </main>
-      <footer className="mx-auto">
+      <footer className="mx-auto text-midnight-50">
         {t('footerText')}&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
-          className="hover:text-squirtle-950 hover:underline">
+          className="hover:text-midnight-800 hover:underline">
           dario.dev
         </a>
       </footer>
