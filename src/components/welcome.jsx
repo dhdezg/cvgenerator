@@ -17,7 +17,7 @@ const Welcome = ({ next }) => {
           <button onClick={next} className="button-base">
             {t('start')}
           </button>
-          <div className="text-midnight-100 p-4">
+          <div className="font-poppins text-midnight-100 p-4">
             <span className="">{t('preview') + ' '}</span>
             <button
               onClick={() => setShowPreview(true)}
