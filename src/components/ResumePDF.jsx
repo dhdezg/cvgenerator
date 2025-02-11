@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   personalInfo: {
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 8,
   },
   name: {
     fontSize: 12,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 12,
-    marginBottom: 2,
+    marginBottom: 1,
     fontFamily: 'Helvetica-Bold',
     color: '#000000',
     textAlign: 'center',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   divider: {
-    marginVertical: 5,
+    marginVertical: 3,
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
   },
