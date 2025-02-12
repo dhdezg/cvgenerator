@@ -91,6 +91,7 @@ const ResumePDF = ({ data, translations }) => {
                 {personalInfo.email} • {personalInfo.phone}
               </Text>
               <Text>{personalInfo.linkedin}</Text>
+              <Text>{personalInfo.interestingLinks}</Text>
               <Text>{personalInfo.address}</Text>
             </View>
           </View>
