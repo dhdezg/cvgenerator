@@ -13,7 +13,7 @@ const Welcome = ({ next }) => {
         <h1 className="text-midnight-100 xs:text-5xl md:text-8xl font-bold select-none text-center">
           {t('welcome')}
         </h1>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <button onClick={next} className="button-base w-auto self-center">
             {t('start')}
           </button>
