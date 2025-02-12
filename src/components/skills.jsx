@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
+import { InfoTooltip } from './ui/tooltip';
 
 const Skills = ({ next, prev, onSave }) => {
   const { t } = useTranslation();
@@ -47,7 +48,10 @@ const Skills = ({ next, prev, onSave }) => {
   return (
     <section id="skills" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">{t('skillsTitle')}</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="step-title">{t('skillsTitle')}</h2>
+          <InfoTooltip message={t('infoMessage')}></InfoTooltip>
+        </div>
         <div
           id="steps-container"
           className="flex flex-col gap-4 xs:w-full md:w-3/4">

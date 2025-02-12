@@ -30,7 +30,9 @@ const resources = {
         language: 'Language name',
         level: 'Language level',
         institution: 'Institution name',
+        studiesTitle: 'Your studies',
       },
+      studiesTitle: 'Your studies',
       workExperienceTitle: 'Work experience',
       companyName: 'Company',
       position: 'Position',
@@ -82,6 +84,8 @@ const resources = {
       ],
       preview: 'Do you want a preview?',
       clickMe: 'Click here!',
+      infoMessage:
+        'If there are any fields that you cannot fill in, leave them empty, they will not appear on your resume!',
     },
   },
   es: {
@@ -107,7 +111,7 @@ const resources = {
         companyName: 'Nombre de la empresa',
         technologies: 'Tecnologías utilizadas',
         skill: 'Nombre de la habilidad',
-        studiesTitle: 'Your studies',
+        studiesTitle: 'Tus estudios',
         schoolName: 'Nombre de la institución',
         degree: 'Nombre del grado',
         language: 'Nombre del idioma',
@@ -165,6 +169,8 @@ const resources = {
       ],
       preview: 'Quieres ver un adelanto?',
       clickMe: 'Pulsa aquí!',
+      infoMessage:
+        'Si hay campos que no puedes rellenar, déjalos vacíos, no aparecerán en tu CV!',
     },
   },
 };

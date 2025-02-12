@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
+import { InfoTooltip } from './ui/tooltip';
 
 const PersonalInfo = ({ next, onSave }) => {
   const { t } = useTranslation();
@@ -40,7 +41,10 @@ const PersonalInfo = ({ next, onSave }) => {
   return (
     <section id="personalInfo" className="w-full">
       <div className="step-container">
-        <h2 className="step-title">{t('personalInfoTitle')}</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="step-title">{t('personalInfoTitle')}</h2>
+          <InfoTooltip message={t('infoMessage')}></InfoTooltip>
+        </div>
         <div className="card xs:w-full md:w-3/4 xs:flex flex-col md:grid grid-cols-3 xs:gap-4 md:gap-6 font-bold text-midnight-100">
           {Object.keys(formData).map((key) => (
             <InputField
