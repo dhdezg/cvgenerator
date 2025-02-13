@@ -128,10 +128,9 @@ const Resume = ({ data, prev }) => {
             <select
               value={selectedTemplate}
               onChange={(event) => setSelectedTemplate(event.target.value)}
-              className="p-2 rounded-full bg-midnight-100">
+              className="p-2 rounded-full bg-midnight-200">
               <option value="harvard">{t('harvard')}</option>
               <option value="modern">{t('modern')}</option>
-              <option value="elegant">{t('elegant')}</option>
             </select>
           </div>
 
@@ -154,6 +153,7 @@ const Resume = ({ data, prev }) => {
                       tasks: t('tasks'),
                       present: t('present'),
                       contact: t('contact'),
+                      aboutMe: t('aboutMe'),
                     }}
                   />
                 }
