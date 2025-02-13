@@ -122,7 +122,7 @@ const WorkExperience = ({ next, prev, onSave }) => {
       <div className="step-container">
         <div className="flex items-center gap-4">
           <h2 className="step-title">{t('workExperienceTitle')}</h2>
-          <InfoTooltip message={t('infoMessage')}></InfoTooltip>
+          <InfoTooltip message={t('workExperienceTooltip')}></InfoTooltip>
         </div>
         <div className="flex flex-col gap-4 xs:w-full md:w-3/4">
           {experiences.map((experience, index) => (

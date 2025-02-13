@@ -15,6 +15,8 @@ const PersonalInfo = ({ next, onSave }) => {
     address: '',
     linkedin: '',
     interestingLinks: '',
+    workPosition: '',
+    aboutMe: '',
   });
 
   useEffect(() => {
