@@ -11,7 +11,12 @@ import {
 } from '../../helper';
 
 const styles = StyleSheet.create({
-  page: { fontFamily: 'Helvetica', display: 'flex', flexDirection: 'row' },
+  page: {
+    fontFamily: 'Helvetica',
+    display: 'flex',
+    flexDirection: 'row',
+    lineHeight: 1.5,
+  },
   mainContent: {
     flex: 2,
     paddingVertical: 75,
