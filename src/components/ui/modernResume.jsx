@@ -2,10 +2,12 @@ import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
 import {
   formatDate,
+  getUniqueWorkSkills,
   hasValidLanguages,
   hasValidPersonalInfo,
   hasValidSkills,
   hasValidStudies,
+  hasValidWorkExperience,
 } from '../../helper';
 
 const styles = StyleSheet.create({
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#2e3e51',
     color: 'white',
-    paddingTop: 120,
+    paddingTop: 100,
     paddingHorizontal: 10,
     textAlign: 'left',
     fontSize: 12,
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 5,
   },
-  skillItem: {
+  columnItem: {
     width: '45%',
   },
 });
@@ -174,8 +176,23 @@ const ModernResume = ({ data, translations }) => {
               <Text style={styles.sectionTitle}>{translations.skills}</Text>
               <View style={styles.columnContainer}>
                 {skills.map((skill, index) => (
-                  <Text key={index} style={styles.skillItem}>
+                  <Text key={index} style={styles.columnItem}>
                     • {skill.name}
+                  </Text>
+                ))}
+              </View>
+              <View style={styles.divider} />
+            </View>
+          )}
+
+          {/*Tech stack */}
+          {hasValidWorkExperience(workExperience) && (
+            <View style={styles.sidebarSection}>
+              <Text style={styles.sectionTitle}>{translations.techStack}</Text>
+              <View style={styles.columnContainer}>
+                {getUniqueWorkSkills(workExperience).map((skill, index) => (
+                  <Text key={index} style={styles.columnItem}>
+                    • {skill}
                   </Text>
                 ))}
               </View>

@@ -101,6 +101,7 @@ const resources = {
       contact: 'Contact',
       workPosition: 'Work position',
       aboutMe: 'About me',
+      techStack: 'Tech stack',
     },
   },
   es: {
@@ -201,6 +202,7 @@ const resources = {
       contact: 'Contacto',
       workPosition: 'Puesto de trabajo',
       aboutMe: 'Sobre mí',
+      techStack: 'Stack tecnológico',
     },
   },
 };

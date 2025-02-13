@@ -154,6 +154,7 @@ const Resume = ({ data, prev }) => {
                       present: t('present'),
                       contact: t('contact'),
                       aboutMe: t('aboutMe'),
+                      techStack: t('techStack'),
                     }}
                   />
                 }

@@ -46,3 +46,15 @@ export const hasValidPersonalInfo = (personalInfo) => {
     personalInfo && Object.values(personalInfo).some((value) => value?.trim())
   );
 };
+
+export const getUniqueWorkSkills = (workExperience) => {
+  if (!Array.isArray(workExperience)) return [];
+
+  const allSkills = workExperience
+    .filter((work) => work.technologies)
+    .map((work) => work.technologies.split(',').map((tech) => tech.trim()))
+    .flat()
+    .filter((tech) => tech);
+
+  return [...new Set(allSkills)];
+};
