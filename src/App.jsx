@@ -12,8 +12,7 @@ import WorkExperience from './components/workExperience';
 import './index.css';
 
 const App = () => {
-  const { i18n } = useTranslation();
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || 'es');
 
   const STEPS = {

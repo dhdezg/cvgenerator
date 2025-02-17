@@ -1,5 +1,6 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   formatDate,
@@ -9,12 +10,21 @@ import {
   hasValidStudies,
   hasValidWorkExperience,
 } from '../helper';
-import ResumePDF from './ResumePDF';
+import HarvardResume from './ui/harvardResume';
+import ModernResume from './ui/modernResume';
 import NavigationButtons from './ui/navigationButtons';
+
+const templates = {
+  harvard: HarvardResume,
+  modern: ModernResume,
+};
 
 const Resume = ({ data, prev }) => {
   const { t } = useTranslation();
   const { personalInfo, workExperience, skills, languages, studies } = data;
+
+  const [selectedTemplate, setSelectedTemplate] = useState('harvard');
+  const SelectedTemplateComponent = templates[selectedTemplate];
 
   return (
     <section id="resume" className="w-full">
@@ -110,35 +120,53 @@ const Resume = ({ data, prev }) => {
             </div>
           )}
         </div>
-        <div className="flex gap-10">
-          <NavigationButtons showNext={false} onPrev={prev} />
 
-          <div className="funcionality-button flex items-center">
-            <PDFDownloadLink
-              document={
-                <ResumePDF
-                  data={data}
-                  translations={{
-                    resumeTitle: t('resumeTitle'),
-                    personalInfo: t('personalInfo'),
-                    workExperienceTitle: t('workExperienceTitle'),
-                    skills: t('skills'),
-                    languages: t('languages'),
-                    education: t('education'),
-                    usedTechs: t('usedTechs'),
-                    tasks: t('tasks'),
-                    present: t('present'),
-                  }}
-                />
-              }
-              fileName={`resume_${personalInfo.fullName}.pdf`}
-              className="text-nowrap text-center">
-              {({ loading }) => (
-                <p>{loading ? 'Loading document...' : t('download')}</p>
-              )}
-            </PDFDownloadLink>
+        <section className="flex flex-col items-center gap-3">
+          {/* Select template */}
+          <div className="flex gap-2 items-center">
+            <label className="text-midnight-50">{t('selectTemplate')}:</label>
+            <select
+              value={selectedTemplate}
+              onChange={(event) => setSelectedTemplate(event.target.value)}
+              className="p-2 rounded-full bg-midnight-200">
+              <option value="harvard">{t('harvard')}</option>
+              <option value="modern">{t('modern')}</option>
+            </select>
           </div>
-        </div>
+
+          {/* Buttons */}
+          <div className="flex gap-10">
+            <NavigationButtons showNext={false} onPrev={prev} />
+            <div className="funcionality-button flex items-center">
+              <PDFDownloadLink
+                document={
+                  <SelectedTemplateComponent
+                    data={data}
+                    translations={{
+                      resumeTitle: t('resumeTitle'),
+                      personalInfo: t('personalInfo'),
+                      workExperienceTitle: t('workExperienceTitle'),
+                      skills: t('skills'),
+                      languages: t('languages'),
+                      education: t('education'),
+                      usedTechs: t('usedTechs'),
+                      tasks: t('tasks'),
+                      present: t('present'),
+                      contact: t('contact'),
+                      aboutMe: t('aboutMe'),
+                      techStack: t('techStack'),
+                    }}
+                  />
+                }
+                fileName={`resume_${personalInfo.fullName}.pdf`}
+                className="text-nowrap text-center">
+                {({ loading }) => (
+                  <p>{loading ? t('loading') : t('download')}</p>
+                )}
+              </PDFDownloadLink>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   );

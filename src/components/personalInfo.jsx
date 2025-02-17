@@ -15,6 +15,8 @@ const PersonalInfo = ({ next, onSave }) => {
     address: '',
     linkedin: '',
     interestingLinks: '',
+    workPosition: '',
+    aboutMe: '',
   });
 
   useEffect(() => {
@@ -39,6 +41,38 @@ const PersonalInfo = ({ next, onSave }) => {
     next();
   };
 
+  const renderFormField = (key) => {
+    const label = t(key);
+
+    if (key === 'aboutMe') {
+      return (
+        <div key={key} className="flex flex-col col-span-3">
+          <label className="xs:text-sm md:text-lg mb-2">{label}</label>
+          <textarea
+            name={key}
+            value={formData[key] || ''}
+            onChange={handleInputChange}
+            rows={3}
+            placeholder={t('placeholders.aboutMe')}
+            className="min-h-[100px] resize-y xs:placeholder:text-xs md:placeholder:text-sm bg-midnight-100 p-2 border rounded-md text-midnight-950 font-normal focus:outline-none focus:ring-2 focus:ring-midnight-500"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div key={key}>
+        <InputField
+          onChange={handleInputChange}
+          label={label}
+          name={key}
+          value={formData[key]}
+          t={t}
+        />
+      </div>
+    );
+  };
+
   return (
     <section id="personalInfo" className="w-full">
       <div className="step-container">
@@ -47,16 +81,7 @@ const PersonalInfo = ({ next, onSave }) => {
           <InfoTooltip message={t('infoMessage')}></InfoTooltip>
         </div>
         <div className="card xs:w-full md:w-3/4 xs:flex flex-col md:grid grid-cols-3 xs:gap-4 md:gap-6 font-bold text-midnight-100">
-          {Object.keys(formData).map((key) => (
-            <InputField
-              key={key}
-              onChange={handleInputChange}
-              label={t(key)}
-              name={key}
-              value={formData[key]}
-              t={t}
-            />
-          ))}
+          {Object.keys(formData).map((key) => renderFormField(key))}
         </div>
         <NavigationButtons showPrev={false} onNext={handleNext} />
       </div>
