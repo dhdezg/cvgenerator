@@ -102,6 +102,8 @@ const resources = {
       workPosition: 'Work position',
       aboutMe: 'About me',
       techStack: 'Tech stack',
+      modernResume: 'Modern resume template',
+      harvardResume: 'Harvard resume template',
     },
   },
   es: {
@@ -203,6 +205,8 @@ const resources = {
       workPosition: 'Puesto de trabajo',
       aboutMe: 'Sobre mí',
       techStack: 'Stack tecnológico',
+      modernResume: 'Estilo moderno CV',
+      harvardResume: 'Estilo Harvard CV',
     },
   },
 };

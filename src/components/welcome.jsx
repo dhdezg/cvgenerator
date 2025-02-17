@@ -35,7 +35,7 @@ const Welcome = ({ next }) => {
           <div className="bg-slate-400 p-6 rounded-xl shadow-xl flex flex-col lg:flex-row gap-4 max-w-[95%] 2xl:max-w-[80%] max-h-[85vh] overflow-auto transform transition-all hover:scale-[1.02]">
             <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2">
               <h4 className="text-lg text-midnight-950 text-center">
-                Harvard resume template
+                {t('harvardResume')}
               </h4>
               <img
                 src={harvardTemplate}
@@ -45,7 +45,7 @@ const Welcome = ({ next }) => {
             </div>
             <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2">
               <h4 className="text-lg text-midnight-950 text-center">
-                Modern resume template
+                {t('modernResume')}
               </h4>
               <img
                 src={modernTemplate}
