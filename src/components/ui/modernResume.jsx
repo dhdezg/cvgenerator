@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     display: 'flex',
     flexDirection: 'row',
-    lineHeight: 1.5,
   },
   mainContent: {
     flex: 2,
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#2e3e51',
     color: 'white',
-    paddingTop: 100,
+    paddingTop: 35,
     paddingHorizontal: 10,
     textAlign: 'left',
     fontSize: 12,
@@ -109,6 +108,17 @@ const styles = StyleSheet.create({
   },
   columnItem: {
     width: '45%',
+  },
+  studiesTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+  },
+  studiesInstitution: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+  },
+  studiesText: {
+    fontSize: 10,
   },
 });
 
@@ -224,11 +234,14 @@ const ModernResume = ({ data, translations }) => {
             <View style={styles.sidebarSection}>
               <Text style={styles.sectionTitle}>{translations.education}</Text>
               {studies.map((study, index) => (
-                <View key={index}>
-                  <Text style={{ fontFamily: 'Helvetica-Bold' }}>
-                    {study.degree} - {study.schoolName}
+                <View key={index} style={{ marginBottom: 5 }}>
+                  <Text style={styles.studiesTitle}>{study.degree}</Text>
+                  <Text style={styles.studiesInstitution}>
+                    {study.schoolName.split(' ').map((word, index) => (
+                      <Text key={index}>{word} </Text>
+                    ))}
                   </Text>
-                  <Text>
+                  <Text style={styles.studiesText}>
                     {study.endDate
                       ? formatDate(study.endDate)
                       : translations.present}
