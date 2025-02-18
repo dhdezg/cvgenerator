@@ -1,7 +1,9 @@
-import { Globe, House } from 'lucide-react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { Globe, House, UserRound, UserRoundX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../i18n.js';
+import Auth from './components/auth';
 import Languages from './components/languages';
 import PersonalInfo from './components/personalInfo';
 import Resume from './components/resume';
@@ -9,11 +11,20 @@ import Skills from './components/skills';
 import Studies from './components/studies';
 import Welcome from './components/welcome';
 import WorkExperience from './components/workExperience';
+import { auth } from './firebaseConfig';
 import './index.css';
 
 const App = () => {
   const { i18n, t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || 'es');
+  const [user, setUser] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
 
   const STEPS = {
     WELCOME: 1,
@@ -139,19 +150,28 @@ const App = () => {
     <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full">
       <div id="header" className="flex justify-between items-center p-5">
         <button onClick={goHome}>
-          <House
-            size={36}
-            className="stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2"
-          />
+          <House size={36} className="header-button" />
         </button>
-        <button onClick={toggleLanguage}>
-          <Globe
-            size={36}
-            className="stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2"
-          />
-        </button>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <div className="flex items-center gap-2">
+              <span className="text-midnight-50">{user.email}</span>
+              <button onClick={() => signOut(auth)}>
+                <UserRoundX size={36} className="header-button" />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setShowAuth(true)}>
+              <UserRound size={36} className="header-button" />
+            </button>
+          )}
+          <button onClick={toggleLanguage}>
+            <Globe size={36} className="header-button" />
+          </button>
+        </div>
       </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
+        {showAuth && <Auth onClose={() => setShowAuth(false)} />}
         {renderStep()}
       </main>
       <footer className="mx-auto text-midnight-50">

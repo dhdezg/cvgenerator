@@ -39,6 +39,9 @@
     @apply xs:text-2xl md:text-5xl text-midnight-100 font-bold select-none;
   }
 
+  .header-button {
+    @apply stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2;
+  }
   
 }
 
