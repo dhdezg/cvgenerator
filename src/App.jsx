@@ -149,7 +149,7 @@ const App = () => {
   };
 
   return (
-    <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full">
+    <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full overflow-x-hidden">
       <div id="header" className="flex justify-between items-center p-5">
         <button onClick={goHome}>
           <House size={36} className="header-button" />
