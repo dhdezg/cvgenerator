@@ -21,9 +21,11 @@ const App = () => {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
+    return () => unsubscribe();
   }, []);
 
   const STEPS = {

@@ -32,25 +32,25 @@ const Welcome = ({ next }) => {
         <div
           className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm cursor-pointer"
           onClick={() => setShowPreview(false)}>
-          <div className="bg-slate-400 p-6 rounded-xl shadow-xl flex flex-col lg:flex-row gap-4 max-w-[95%] 2xl:max-w-[80%] max-h-[85vh] overflow-auto transform transition-all hover:scale-[1.02]">
-            <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2">
-              <h4 className="text-lg text-midnight-950 text-center">
+          <div className="bg-white p-6 rounded-xl shadow-xl flex flex-col lg:flex-row gap-4 max-w-[95%] 2xl:max-w-[80%] max-h-[85vh] overflow-auto transform transition-all hover:scale-[1.02]">
+            <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2 shadow-md">
+              <h4 className="text-lg text-midnight-950 text-center underline">
                 {t('harvardResume')}
               </h4>
               <img
                 src={harvardTemplate}
                 alt="Preview"
-                className="w-full h-auto rounded-lg shadow-md object-contain 2xl:max-h-[70vh]"
+                className="w-full h-auto rounded-lg  2xl:max-h-[70vh]"
               />
             </div>
-            <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2">
-              <h4 className="text-lg text-midnight-950 text-center">
+            <div className="flex flex-col justify-center p-4 rounded-lg flex-1 gap-2 shadow-md">
+              <h4 className="text-lg text-midnight-950 text-center underline">
                 {t('modernResume')}
               </h4>
               <img
                 src={modernTemplate}
                 alt="Preview"
-                className="w-full h-auto rounded-lg shadow-md object-contain 2xl:max-h-[70vh]"
+                className="w-full h-auto rounded-lg object-contain 2xl:max-h-[70vh]"
               />
             </div>
           </div>

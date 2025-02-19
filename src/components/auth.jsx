@@ -1,13 +1,15 @@
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { X } from 'lucide-react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { auth, googleProvider } from '../firebaseConfig';
+import { auth, db, googleProvider } from '../firebaseConfig';
 
 const Auth = ({ onClose }) => {
   const [email, setEmail] = useState('');
@@ -19,11 +21,23 @@ const Auth = ({ onClose }) => {
   const handleAuth = async (event) => {
     event.preventDefault();
     setError('');
+
     try {
       if (isRegister) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await sendEmailVerification(userCredential.user);
+        setError(t('auth.verificationEmailSent'));
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await saveUserToFirestore(userCredential.user);
       }
       onClose();
     } catch (err) {
@@ -33,10 +47,24 @@ const Auth = ({ onClose }) => {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      await saveUserToFirestore(userCredential.user);
       onClose();
     } catch (err) {
       setError(t(`authErrors.${err.code}`) || err.message);
+    }
+  };
+
+  const saveUserToFirestore = async (user) => {
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        email: user.email,
+        createdAt: new Date(),
+        data: {},
+      });
     }
   };
 

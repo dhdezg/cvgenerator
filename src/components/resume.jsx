@@ -1,7 +1,9 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth, db } from '../firebaseConfig';
 import {
   formatDate,
   hasValidLanguages,
@@ -22,9 +24,42 @@ const templates = {
 const Resume = ({ data, prev }) => {
   const { t } = useTranslation();
   const { personalInfo, workExperience, skills, languages, studies } = data;
+  const [cvData, setCvData] = useState(
+    data || {
+      personalInfo: {},
+      workExperience: [],
+      skills: [],
+      studies: [],
+      languages: [],
+    }
+  );
 
   const [selectedTemplate, setSelectedTemplate] = useState('harvard');
   const SelectedTemplateComponent = templates[selectedTemplate];
+
+  useEffect(() => {
+    const fetchCvData = async () => {
+      if (!auth.currentUser) return;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        setCvData(userSnap.data().data || {});
+      }
+    };
+
+    fetchCvData();
+  }, []);
+
+  const handleDownloadClick = async () => {
+    if (!auth.currentUser) return;
+
+    setTimeout(async () => {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(userRef, { data: cvData });
+    }, 300);
+  };
 
   return (
     <section id="resume" className="w-full">
@@ -158,7 +193,10 @@ const Resume = ({ data, prev }) => {
                     }}
                   />
                 }
-                fileName={`resume_${personalInfo.fullName}.pdf`}
+                fileName={`resume_${
+                  personalInfo.fullName || 'cv'
+                }_${selectedTemplate}.pdf`}
+                onClick={handleDownloadClick}
                 className="text-nowrap text-center">
                 {({ loading }) => (
                   <p>{loading ? t('loading') : t('download')}</p>
