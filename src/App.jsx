@@ -1,4 +1,5 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Globe, House, UserRound, UserRoundX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,7 @@ import Skills from './components/skills';
 import Studies from './components/studies';
 import Welcome from './components/welcome';
 import WorkExperience from './components/workExperience';
-import { auth } from './firebaseConfig';
+import { auth, db } from './firebaseConfig';
 import './index.css';
 
 const App = () => {
@@ -21,8 +22,30 @@ const App = () => {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const fetchUserData = async (currentUser) => {
+      if (!currentUser) return;
+
+      const userRef = doc(db, 'users', currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        setFormData(
+          userSnap.data().data || {
+            personalInfo: {},
+            workExperience: [],
+            skills: [],
+            studies: [],
+            languages: [],
+          }
+        );
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        await fetchUserData(currentUser);
+      }
     });
 
     return () => unsubscribe();
@@ -61,13 +84,22 @@ const App = () => {
     setCurrentStep(currentStep > STEPS.WELCOME ? currentStep - 1 : currentStep);
   };
 
-  const handleSave = (data, section) => {
+  const handleSave = async (data, section) => {
+    if (!auth.currentUser) return;
+
     const newFormData = {
       ...formData,
       [section]: data,
     };
     setFormData(newFormData);
     localStorage.setItem('formData', JSON.stringify(newFormData));
+
+    try {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(userRef, { data: newFormData }, { merge: true });
+    } catch (error) {
+      console.error('Error al guardar en Firestore:', error);
+    }
   };
 
   const goHome = () => {

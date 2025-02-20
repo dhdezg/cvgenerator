@@ -1,6 +1,8 @@
+import { doc, getDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth, db } from '../firebaseConfig';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
 import { InfoTooltip } from './ui/tooltip';
@@ -8,24 +10,44 @@ import { InfoTooltip } from './ui/tooltip';
 const PersonalInfo = ({ next, onSave }) => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    linkedin: '',
-    interestingLinks: '',
-    workPosition: '',
-    aboutMe: '',
+  const [formData, setFormData] = useState(() => {
+    const savedData = localStorage.getItem('formData');
+    return savedData
+      ? JSON.parse(savedData).personalInfo || {}
+      : {
+          fullName: '',
+          email: '',
+          phone: '',
+          address: '',
+          linkedin: '',
+          interestingLinks: '',
+          workPosition: '',
+          aboutMe: '',
+        };
   });
 
   useEffect(() => {
-    const savedData = JSON.parse(
-      localStorage.getItem('formData')
-    )?.personalInfo;
-    if (savedData) {
-      setFormData(savedData);
-    }
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data().data?.personalInfo || {};
+        setFormData((prev) => ({ ...prev, ...userData }));
+
+        localStorage.setItem(
+          'formData',
+          JSON.stringify({
+            ...JSON.parse(localStorage.getItem('formData') || '{}'),
+            personalInfo: userData,
+          })
+        );
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const handleInputChange = (event) => {
@@ -34,10 +56,18 @@ const PersonalInfo = ({ next, onSave }) => {
       ...prev,
       [name]: value,
     }));
+
+    localStorage.setItem(
+      'formData',
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem('formData') || '{}'),
+        personalInfo: { ...formData, [name]: value },
+      })
+    );
   };
 
   const handleNext = () => {
-    onSave(formData);
+    onSave(formData, 'personalInfo');
     next();
   };
 
