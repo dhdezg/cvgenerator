@@ -5,7 +5,7 @@ const resources = {
   en: {
     translation: {
       welcome: 'Welcome to CV Generator',
-      start: 'Start',
+      start: 'Create your resume now!',
       prevStep: 'Previous step',
       nextStep: 'Next step',
       personalInfoTitle: 'Your personal data',
@@ -104,12 +104,14 @@ const resources = {
       techStack: 'Tech stack',
       modernResume: 'Modern resume template',
       harvardResume: 'Harvard resume template',
+      goHome: 'Go to home page',
+      changeLanguage: 'Change language',
     },
   },
   es: {
     translation: {
       welcome: 'Bienvenido a CV Generator',
-      start: 'Empezar',
+      start: 'Crea tu currículum ya!',
       prevStep: 'Paso anterior',
       nextStep: 'Siguiente paso',
       personalInfoTitle: 'Tus datos personales',
@@ -207,6 +209,8 @@ const resources = {
       techStack: 'Stack tecnológico',
       modernResume: 'Estilo moderno CV',
       harvardResume: 'Estilo Harvard CV',
+      goHome: 'Ir a la página principal',
+      changeLanguage: 'Cambiar idioma',
     },
   },
 };
