@@ -9,7 +9,6 @@ import { InfoTooltip } from './ui/tooltip';
 
 const PersonalInfo = ({ next, onSave }) => {
   const { t } = useTranslation();
-
   const [formData, setFormData] = useState(() => {
     const savedData = localStorage.getItem('formData');
     return savedData
