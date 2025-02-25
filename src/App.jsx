@@ -98,8 +98,6 @@ const App = () => {
       [section]: processedData,
     };
 
-    console.log('Estado completo a guardar:', newFormData);
-
     try {
       const userRef = doc(db, 'users', auth.currentUser.uid);
 
@@ -110,10 +108,7 @@ const App = () => {
         ...existingData,
         [section]: processedData,
       };
-
       await setDoc(userRef, { data: updatedData }, { merge: true });
-      console.log(`✅ Datos de ${section} guardados en Firestore`);
-
       setFormData(newFormData);
       localStorage.setItem('formData', JSON.stringify(newFormData));
     } catch (error) {

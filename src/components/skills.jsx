@@ -1,22 +1,45 @@
+import { doc, getDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth, db } from '../firebaseConfig';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
 import { InfoTooltip } from './ui/tooltip';
 
 const Skills = ({ next, prev, onSave }) => {
   const { t } = useTranslation();
-  const emptySkill = {
-    name: '',
-  };
-  const [skills, setSkills] = useState([emptySkill]);
+  const emptySkill = { name: '' };
+
+  const [skills, setSkills] = useState(() => {
+    const savedData = localStorage.getItem('formData');
+    const storedSkills = savedData ? JSON.parse(savedData).skills || [] : [];
+    return storedSkills.length > 0 ? storedSkills : [{ ...emptySkill }];
+  });
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('formData'))?.skills;
-    if (savedData && savedData.length > 0) {
-      setSkills(savedData);
-    }
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data().data?.skills || [];
+        if (userData.length > 0) {
+          setSkills(userData);
+          localStorage.setItem(
+            'formData',
+            JSON.stringify({
+              ...JSON.parse(localStorage.getItem('formData') || '{}'),
+              skills: userData,
+            })
+          );
+        }
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const addSkill = () => {
@@ -36,12 +59,23 @@ const Skills = ({ next, prev, onSave }) => {
   };
 
   const handleNext = () => {
-    onSave(skills);
+    const validSkills = skills.filter((skill) =>
+      Object.values(skill).some((value) => value.trim() !== '')
+    );
+
+    if (validSkills.length > 0) {
+      onSave(validSkills, 'skills');
+    } else {
+      onSave([], 'skills');
+    }
     next();
   };
 
   const handlePrev = () => {
-    onSave(skills);
+    const validSkills = skills.filter((skill) =>
+      Object.values(skill).some((value) => value.trim() !== '')
+    );
+    onSave(validSkills, 'skills');
     prev();
   };
 
@@ -70,15 +104,18 @@ const Skills = ({ next, prev, onSave }) => {
                     </button>
                   )}
                 </div>
-                <InputField
-                  label={t('skillName')}
-                  name="skill"
-                  value={skill.name}
-                  onChange={(e) =>
-                    handleSkillChange(index, 'name', e.target.value)
-                  }
-                  t={t}
-                />
+                {Object.keys(emptySkill).map((key) => (
+                  <InputField
+                    key={key}
+                    label={t('skillName')}
+                    name="name"
+                    value={skill[key]}
+                    onChange={(e) =>
+                      handleSkillChange(index, key, e.target.value)
+                    }
+                    t={t}
+                  />
+                ))}
               </div>
             </div>
           ))}

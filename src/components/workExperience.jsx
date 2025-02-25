@@ -37,7 +37,6 @@ const WorkExperience = ({ next, prev, onSave }) => {
 
       if (userSnap.exists()) {
         const userData = userSnap.data().data?.workExperience || [];
-        console.log('Fetched work experience:', userData); // Debug log
         if (userData.length > 0) {
           setExperiences(userData);
           localStorage.setItem(
@@ -73,16 +72,13 @@ const WorkExperience = ({ next, prev, onSave }) => {
   };
 
   const handleNext = () => {
-    // Solo guardar si hay datos válidos
     const validExperiences = experiences.filter((exp) =>
       Object.values(exp).some((value) => value.trim() !== '')
     );
 
     if (validExperiences.length > 0) {
-      console.log('Guardando experiencias válidas:', validExperiences);
       onSave(validExperiences, 'workExperience');
     } else {
-      console.log('No hay experiencias válidas para guardar');
       onSave([], 'workExperience');
     }
     next();

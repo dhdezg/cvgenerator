@@ -1,6 +1,8 @@
+import { doc, getDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth, db } from '../firebaseConfig';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
 import { InfoTooltip } from './ui/tooltip';
@@ -12,13 +14,40 @@ const Languages = ({ next, prev, onSave }) => {
     level: '',
     institution: '',
   };
-  const [languages, setLanguages] = useState([{ ...emptyLanguage }]);
+
+  const [languages, setLanguages] = useState(() => {
+    const savedData = localStorage.getItem('formData');
+    const storedLanguages = savedData
+      ? JSON.parse(savedData).languages || []
+      : [];
+    return storedLanguages.length > 0
+      ? storedLanguages
+      : [{ ...emptyLanguage }];
+  });
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('formData'))?.languages;
-    if (savedData && savedData.length > 0) {
-      setLanguages(savedData);
-    }
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data().data?.languages || [];
+        if (userData.length > 0) {
+          setLanguages(userData);
+          localStorage.setItem(
+            'formData',
+            JSON.stringify({
+              ...JSON.parse(localStorage.getItem('formData') || '{}'),
+              languages: userData,
+            })
+          );
+        }
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const addLanguage = () => {
@@ -34,11 +63,22 @@ const Languages = ({ next, prev, onSave }) => {
     setLanguages((prev) => prev.filter((_, i) => i !== index));
   };
   const handleNext = () => {
-    onSave(languages);
+    const validLanguages = languages.filter((lang) =>
+      Object.values(lang).some((value) => value.trim() !== '')
+    );
+
+    if (validLanguages.length > 0) {
+      onSave(validLanguages, 'languages');
+    } else {
+      onSave([], 'languages');
+    }
     next();
   };
   const handlePrev = () => {
-    onSave(languages);
+    const validLanguages = languages.filter((lang) =>
+      Object.values(lang).some((value) => value.trim() !== '')
+    );
+    onSave(validLanguages, 'languages');
     prev();
   };
 
@@ -65,13 +105,13 @@ const Languages = ({ next, prev, onSave }) => {
                     </button>
                   )}
                 </div>
-                {Object.entries(language).map(([key, value]) => (
+                {Object.keys(emptyLanguage).map((key) => (
                   <InputField
                     key={`${index}-${key}`}
                     onChange={(e) => handleLanguageChange(index, e)}
                     label={t(key)}
                     name={key}
-                    value={value || ''}
+                    value={language[key] || ''}
                     t={t}
                   />
                 ))}
