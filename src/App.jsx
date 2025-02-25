@@ -10,6 +10,7 @@ import PersonalInfo from './components/personalInfo';
 import Resume from './components/resume';
 import Skills from './components/skills';
 import Studies from './components/studies';
+import Tooltip from './components/ui/tooltip.jsx';
 import Welcome from './components/welcome';
 import WorkExperience from './components/workExperience';
 import { auth, db } from './firebaseConfig.js';
@@ -197,9 +198,15 @@ const App = () => {
   return (
     <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full overflow-x-hidden">
       <div id="header" className="flex justify-between items-center p-5">
-        <button onClick={goHome}>
-          <House size={36} className="header-button" />
-        </button>
+        <div className="relative flex items-center group">
+          <button onClick={goHome}>
+            <House
+              size={36}
+              className="stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2"
+            />
+          </button>
+          <Tooltip message={t('goHome')} position="right" />
+        </div>
         <div className="flex items-center gap-4">
           {user ? (
             <div className="flex items-center gap-2">
@@ -213,9 +220,12 @@ const App = () => {
               <UserRound size={36} className="header-button" />
             </button>
           )}
-          <button onClick={toggleLanguage}>
-            <Globe size={36} className="header-button" />
-          </button>
+          <div>
+            <button onClick={toggleLanguage}>
+              <Globe size={36} className="header-button" />
+            </button>
+            <Tooltip message={t('changeLanguage')} position="left" />
+          </div>
         </div>
       </div>
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">

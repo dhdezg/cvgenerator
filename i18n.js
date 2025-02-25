@@ -5,7 +5,7 @@ const resources = {
   en: {
     translation: {
       welcome: 'Welcome to CV Generator',
-      start: 'Start',
+      start: 'Create your resume now!',
       prevStep: 'Previous step',
       nextStep: 'Next step',
       personalInfoTitle: 'Your personal data',
@@ -125,12 +125,14 @@ const resources = {
         noAccount: "Don't you have an account?",
         verificationEmailSent: 'Verification email sent',
       },
+      goHome: 'Go to home page',
+      changeLanguage: 'Change language',
     },
   },
   es: {
     translation: {
       welcome: 'Bienvenido a CV Generator',
-      start: 'Empezar',
+      start: 'Crea tu currículum ya!',
       prevStep: 'Paso anterior',
       nextStep: 'Siguiente paso',
       personalInfoTitle: 'Tus datos personales',
@@ -249,6 +251,8 @@ const resources = {
         noAccount: '¿No tienes una cuenta?',
         verificationEmailSent: 'Correo de verificación enviado',
       },
+      goHome: 'Ir a la página principal',
+      changeLanguage: 'Cambiar idioma',
     },
   },
 };
