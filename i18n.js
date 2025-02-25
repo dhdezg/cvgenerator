@@ -127,6 +127,8 @@ const resources = {
       },
       goHome: 'Go to home page',
       changeLanguage: 'Change language',
+      logOut: 'Log out',
+      logIn: 'Log in',
     },
   },
   es: {
@@ -253,6 +255,8 @@ const resources = {
       },
       goHome: 'Ir a la página principal',
       changeLanguage: 'Cambiar idioma',
+      logOut: 'Cerrar sesión',
+      logIn: 'Iniciar sesión',
     },
   },
 };

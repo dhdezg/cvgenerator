@@ -211,16 +211,22 @@ const App = () => {
           {user ? (
             <div className="flex items-center gap-2">
               <span className="text-midnight-50">{user.email}</span>
-              <button onClick={() => signOut(auth)}>
-                <UserRoundX size={36} className="header-button" />
-              </button>
+              <div className="relative flex items-center group">
+                <button onClick={() => signOut(auth)}>
+                  <UserRoundX size={36} className="header-button" />
+                </button>
+                <Tooltip message={t('logOut')} position="left"></Tooltip>
+              </div>
             </div>
           ) : (
-            <button onClick={() => setShowAuth(true)}>
-              <UserRound size={36} className="header-button" />
-            </button>
+            <div className="relative flex items-center group">
+              <button onClick={() => setShowAuth(true)}>
+                <UserRound size={36} className="header-button" />
+              </button>
+              <Tooltip message={t('logIn')} position="left" />
+            </div>
           )}
-          <div>
+          <div className="relative flex items-center group">
             <button onClick={toggleLanguage}>
               <Globe size={36} className="header-button" />
             </button>
