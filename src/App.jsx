@@ -12,7 +12,7 @@ import Skills from './components/skills';
 import Studies from './components/studies';
 import Welcome from './components/welcome';
 import WorkExperience from './components/workExperience';
-import { auth, db } from './firebaseConfig';
+import { auth, db } from './firebaseConfig.js';
 import './index.css';
 
 const App = () => {
@@ -85,20 +85,39 @@ const App = () => {
   };
 
   const handleSave = async (data, section) => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser) {
+      console.warn('No hay usuario autenticado');
+      return;
+    }
+
+    const processedData =
+      section === 'workExperience' && !Array.isArray(data) ? [data] : data;
 
     const newFormData = {
       ...formData,
-      [section]: data,
+      [section]: processedData,
     };
-    setFormData(newFormData);
-    localStorage.setItem('formData', JSON.stringify(newFormData));
+
+    console.log('Estado completo a guardar:', newFormData);
 
     try {
       const userRef = doc(db, 'users', auth.currentUser.uid);
-      await setDoc(userRef, { data: newFormData }, { merge: true });
+
+      const docSnap = await getDoc(userRef);
+      const existingData = docSnap.exists() ? docSnap.data().data || {} : {};
+
+      const updatedData = {
+        ...existingData,
+        [section]: processedData,
+      };
+
+      await setDoc(userRef, { data: updatedData }, { merge: true });
+      console.log(`✅ Datos de ${section} guardados en Firestore`);
+
+      setFormData(newFormData);
+      localStorage.setItem('formData', JSON.stringify(newFormData));
     } catch (error) {
-      console.error('Error al guardar en Firestore:', error);
+      console.error('❌ Error al guardar en Firestore:', error);
     }
   };
 

@@ -1,6 +1,8 @@
+import { doc, getDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth, db } from '../firebaseConfig';
 import InputField from './ui/inputField';
 import NavigationButtons from './ui/navigationButtons';
 import { InfoTooltip } from './ui/tooltip';
@@ -16,36 +18,81 @@ const WorkExperience = ({ next, prev, onSave }) => {
     tasks: '',
   };
 
-  const [experiences, setExperiences] = useState([{ ...emptyExperience }]);
+  const [experiences, setExperiences] = useState(() => {
+    const savedData = localStorage.getItem('formData');
+    const storedExperiences = savedData
+      ? JSON.parse(savedData).workExperience || []
+      : [];
+    return storedExperiences.length > 0
+      ? storedExperiences
+      : [{ ...emptyExperience }];
+  });
 
   useEffect(() => {
-    const savedData = JSON.parse(
-      localStorage.getItem('formData')
-    )?.workExperience;
-    if (savedData && savedData.length > 0) {
-      setExperiences(savedData);
-    }
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data().data?.workExperience || [];
+        console.log('Fetched work experience:', userData); // Debug log
+        if (userData.length > 0) {
+          setExperiences(userData);
+          localStorage.setItem(
+            'formData',
+            JSON.stringify({
+              ...JSON.parse(localStorage.getItem('formData') || '{}'),
+              workExperience: userData,
+            })
+          );
+        }
+      }
+    };
+
+    fetchUserData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      'formData',
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem('formData') || '{}'),
+        workExperience: experiences,
+      })
+    );
+  }, [experiences]);
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
-    setExperiences((prev) => {
-      const newExperiences = [...prev];
-      newExperiences[index] = {
-        ...newExperiences[index],
-        [name]: value,
-      };
-      return newExperiences;
-    });
+    const newExperiences = experiences.map((exp, i) =>
+      i === index ? { ...exp, [name]: value } : exp
+    );
+    setExperiences(newExperiences);
   };
 
   const handleNext = () => {
-    onSave(experiences);
+    // Solo guardar si hay datos válidos
+    const validExperiences = experiences.filter((exp) =>
+      Object.values(exp).some((value) => value.trim() !== '')
+    );
+
+    if (validExperiences.length > 0) {
+      console.log('Guardando experiencias válidas:', validExperiences);
+      onSave(validExperiences, 'workExperience');
+    } else {
+      console.log('No hay experiencias válidas para guardar');
+      onSave([], 'workExperience');
+    }
     next();
   };
 
   const handlePrev = () => {
-    onSave(experiences);
+    const validExperiences = experiences.filter((exp) =>
+      Object.values(exp).some((value) => value.trim() !== '')
+    );
+    onSave(validExperiences, 'workExperience');
     prev();
   };
 
@@ -140,11 +187,11 @@ const WorkExperience = ({ next, prev, onSave }) => {
                 )}
               </div>
               <div className="xs:flex flex-col md:grid grid-cols-3 xs:gap-4 md:gap-6 font-bold text-midnight-100">
-                {Object.entries(experience).map(([key, value]) => (
+                {Object.keys(emptyExperience).map((key) => (
                   <div
                     key={key}
                     className={key === 'tasks' ? 'col-span-3' : ''}>
-                    {renderFormField(key, value, index)}
+                    {renderFormField(key, experience[key], index)}
                   </div>
                 ))}
               </div>
