@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: -apple-system, Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+}
+@layer components {
+  .input-base {
+    @apply p-3 border-2 rounded-2xl bg-midnight-100 border-midnight-700 focus:ring-2 focus:ring-midnight-800 focus:outline-none text-midnight-950;
+  }
+  .input-disabled {
+    @apply bg-midnight-50 border-midnight-400 text-midnight-200 cursor-not-allowed opacity-80;
+  }
+
+  .input-form {
+    @apply text-midnight-950 bg-midnight-100 xs:placeholder:text-xs md:placeholder:text-sm font-normal p-2 border border-midnight-200 rounded-md focus:outline-none focus:ring-2 focus:ring-midnight-500;
+  }
+
+  .button-base {
+    @apply bg-midnight-800 hover:bg-midnight-600 hover:scale-125 rounded-full p-5 min-w-28 xs:text-base md:text-xl text-midnight-50 shadow-lg shadow-midnight-700 transition-all duration-300;
+  }
+
+  .funcionality-button {
+    @apply bg-midnight-800 hover:bg-midnight-600 hover:scale-125 rounded-full p-3 xs:text-base md:text-lg text-midnight-50 shadow-lg shadow-midnight-700 transition-all duration-300;
+  }
+
+  .form {
+    @apply flex flex-col;
+  }
+
+  .step-container {
+    @apply flex flex-col justify-center items-center xs:gap-10 md:gap-20 xs:p-5 md:p-10 h-full;
+  }
+
+  .step-title {
+    @apply xs:text-2xl md:text-5xl text-midnight-100 font-bold select-none;
+  }
+
+  .header-button {
+    @apply stroke-midnight-50 hover:stroke-midnight-800 hover:bg-midnight-50 hover:rounded-full p-2;
+  }
+  
+}
+
+.card {
+  padding: 1.5rem;
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  background-color: rgba(0, 66, 179, 0.193);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  color: #cef0ff;
+}
