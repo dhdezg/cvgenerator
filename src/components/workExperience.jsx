@@ -34,21 +34,25 @@ const WorkExperience = ({ next, prev, onSave }) => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
 
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
-        const userData = userSnap.data().data?.workExperience || [];
-        if (userData.length > 0) {
-          setExperiences(userData);
-          localStorage.setItem(
-            'formData',
-            JSON.stringify({
-              ...JSON.parse(localStorage.getItem('formData') || '{}'),
-              workExperience: userData,
-            })
-          );
+        if (userSnap.exists()) {
+          const userData = userSnap.data().data?.workExperience || [];
+          if (userData.length > 0) {
+            setExperiences(userData);
+            localStorage.setItem(
+              'formData',
+              JSON.stringify({
+                ...JSON.parse(localStorage.getItem('formData') || '{}'),
+                workExperience: userData,
+              })
+            );
+          }
         }
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
     };
 

@@ -29,26 +29,33 @@ const Languages = ({ next, prev, onSave }) => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
 
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
-        const userData = userSnap.data().data?.languages || [];
-        if (userData.length > 0) {
-          setLanguages(userData);
-          localStorage.setItem(
-            'formData',
-            JSON.stringify({
-              ...JSON.parse(localStorage.getItem('formData') || '{}'),
-              languages: userData,
-            })
-          );
+        if (userSnap.exists()) {
+          const userData = userSnap.data().data?.languages || [];
+          if (userData.length > 0) {
+            setLanguages(userData);
+          }
         }
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
     };
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      'formData',
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem('formData') || '{}'),
+        languages: languages,
+      })
+    );
+  }, [languages]);
 
   const addLanguage = () => {
     setLanguages((prev) => [...prev, { ...emptyLanguage }]);
