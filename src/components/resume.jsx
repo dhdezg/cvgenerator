@@ -23,16 +23,18 @@ const templates = {
 
 const Resume = ({ data, prev }) => {
   const { t } = useTranslation();
-  const { personalInfo, workExperience, skills, languages, studies } = data;
-  const [cvData, setCvData] = useState(
-    data || {
-      personalInfo: {},
-      workExperience: [],
-      skills: [],
-      studies: [],
-      languages: [],
+  const [cvData, setCvData] = useState(data);
+
+  useEffect(() => {
+    setCvData(data);
+  }, [data]);
+
+  const handleDownloadClick = async () => {
+    if (auth.currentUser) {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(userRef, { data: cvData });
     }
-  );
+  };
 
   const [selectedTemplate, setSelectedTemplate] = useState('harvard');
   const SelectedTemplateComponent = templates[selectedTemplate];
@@ -52,28 +54,19 @@ const Resume = ({ data, prev }) => {
     fetchCvData();
   }, []);
 
-  const handleDownloadClick = async () => {
-    if (!auth.currentUser) return;
-
-    setTimeout(async () => {
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      await updateDoc(userRef, { data: cvData });
-    }, 300);
-  };
-
   return (
     <section id="resume" className="w-full">
       <div className="step-container">
         <h2 className="step-title">{t('resumeTitle')}</h2>
         <div className="xs:w-full md:w-3/4 space-y-6">
           {/* Personal Info Section */}
-          {hasValidPersonalInfo(personalInfo) && (
+          {hasValidPersonalInfo(data.personalInfo) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
                 {t('personalInfo')}
               </h3>
               <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
-                {Object.entries(personalInfo).map(([key, value]) => (
+                {Object.entries(data.personalInfo).map(([key, value]) => (
                   <div key={key}>
                     <span className="font-bold">{t(key)}: </span>
                     <span className="xs:text-base md:text-base">{value}</span>
@@ -84,12 +77,12 @@ const Resume = ({ data, prev }) => {
           )}
 
           {/* Work Experience Section */}
-          {hasValidWorkExperience(workExperience) && (
+          {hasValidWorkExperience(data.workExperience) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
                 {t('workExperienceTitle')}
               </h3>
-              {workExperience.map((exp, index) => (
+              {data.workExperience.map((exp, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-bold">{exp.companyName}</h4>
                   <p>{exp.position}</p>
@@ -104,13 +97,13 @@ const Resume = ({ data, prev }) => {
           )}
 
           {/* Skills Section */}
-          {hasValidSkills(skills) && (
+          {hasValidSkills(data.skills) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
                 {t('skills')}
               </h3>
               <div className="xs:flex flex-col md:grid grid-cols-4 gap-4">
-                {skills.map((skill, index) => (
+                {data.skills.map((skill, index) => (
                   <div key={index}>
                     <span>{skill.name}</span>
                   </div>
@@ -120,13 +113,13 @@ const Resume = ({ data, prev }) => {
           )}
 
           {/* Languages Section */}
-          {hasValidLanguages(languages) && (
+          {hasValidLanguages(data.languages) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
                 {t('languages')}
               </h3>
               <div className="xs:flex flex-col md:grid grid-cols-2 gap-4">
-                {languages.map((language, index) => (
+                {data.languages.map((language, index) => (
                   <div key={index}>
                     <span className="font-bold">{language.language}: </span>
                     <span>{language.level}</span>
@@ -137,12 +130,12 @@ const Resume = ({ data, prev }) => {
           )}
 
           {/* Studies Section */}
-          {hasValidStudies(studies) && (
+          {hasValidStudies(data.studies) && (
             <div className="card">
               <h3 className="xs:text-lg md:text-xl font-bold mb-4">
                 {t('education')}
               </h3>
-              {studies.map((study, index) => (
+              {data.studies.map((study, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-bold">{study.schoolName}</h4>
                   <p>{study.degree}</p>
@@ -194,7 +187,7 @@ const Resume = ({ data, prev }) => {
                   />
                 }
                 fileName={`resume_${
-                  personalInfo.fullName || 'cv'
+                  data.personalInfo.fullName || 'cv'
                 }_${selectedTemplate}.pdf`}
                 onClick={handleDownloadClick}
                 className="text-nowrap text-center">

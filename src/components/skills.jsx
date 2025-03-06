@@ -21,26 +21,33 @@ const Skills = ({ next, prev, onSave }) => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
 
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
-        const userData = userSnap.data().data?.skills || [];
-        if (userData.length > 0) {
-          setSkills(userData);
-          localStorage.setItem(
-            'formData',
-            JSON.stringify({
-              ...JSON.parse(localStorage.getItem('formData') || '{}'),
-              skills: userData,
-            })
-          );
+        if (userSnap.exists()) {
+          const userData = userSnap.data().data?.skills || [];
+          if (userData.length > 0) {
+            setSkills(userData);
+          }
         }
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
     };
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      'formData',
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem('formData') || '{}'),
+        skills: skills,
+      })
+    );
+  }, [skills]);
 
   const addSkill = () => {
     setSkills((prev) => [...prev, { ...emptySkill }]);
@@ -108,7 +115,7 @@ const Skills = ({ next, prev, onSave }) => {
                   <InputField
                     key={key}
                     label={t('skillName')}
-                    name="name"
+                    name="skill"
                     value={skill[key]}
                     onChange={(e) =>
                       handleSkillChange(index, key, e.target.value)

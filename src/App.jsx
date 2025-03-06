@@ -23,29 +23,27 @@ const App = () => {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async (currentUser) => {
-      if (!currentUser) return;
-
-      const userRef = doc(db, 'users', currentUser.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        setFormData(
-          userSnap.data().data || {
-            personalInfo: {},
-            workExperience: [],
-            skills: [],
-            studies: [],
-            languages: [],
-          }
-        );
-      }
-    };
-
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        await fetchUserData(currentUser);
+        // If user is logged in, try to retrive Firebase data
+        const userRef = doc(db, 'users', currentUser.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const firebaseData = userSnap.data().data;
+          // Merge Firebase and localStorage data if exists
+          const localData = JSON.parse(
+            localStorage.getItem('formData') || '{}'
+          );
+          setFormData({
+            ...localData,
+            ...firebaseData,
+          });
+        }
+      } else {
+        // If there are not user logged in, use localStorage data
+        const localData = JSON.parse(localStorage.getItem('formData') || '{}');
+        setFormData(localData);
       }
     });
 
@@ -86,11 +84,6 @@ const App = () => {
   };
 
   const handleSave = async (data, section) => {
-    if (!auth.currentUser) {
-      console.warn('No hay usuario autenticado');
-      return;
-    }
-
     const processedData =
       section === 'workExperience' && !Array.isArray(data) ? [data] : data;
 
@@ -99,21 +92,24 @@ const App = () => {
       [section]: processedData,
     };
 
-    try {
-      const userRef = doc(db, 'users', auth.currentUser.uid);
+    // Save always in localStorage
+    setFormData(newFormData);
+    localStorage.setItem('formData', JSON.stringify(newFormData));
 
-      const docSnap = await getDoc(userRef);
-      const existingData = docSnap.exists() ? docSnap.data().data || {} : {};
-
-      const updatedData = {
-        ...existingData,
-        [section]: processedData,
-      };
-      await setDoc(userRef, { data: updatedData }, { merge: true });
-      setFormData(newFormData);
-      localStorage.setItem('formData', JSON.stringify(newFormData));
-    } catch (error) {
-      console.error('❌ Error al guardar en Firestore:', error);
+    // Only if user is logged in, save in Firebase
+    if (auth.currentUser) {
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const docSnap = await getDoc(userRef);
+        const existingData = docSnap.exists() ? docSnap.data().data || {} : {};
+        const updatedData = {
+          ...existingData,
+          [section]: processedData,
+        };
+        await setDoc(userRef, { data: updatedData }, { merge: true });
+      } catch (error) {
+        console.error('Error al guardar en Firestore:', error);
+      }
     }
   };
 
