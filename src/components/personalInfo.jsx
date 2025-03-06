@@ -24,25 +24,22 @@ const PersonalInfo = ({ next, onSave }) => {
           aboutMe: '',
         };
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
 
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
-        const userData = userSnap.data().data?.personalInfo || {};
-        setFormData((prev) => ({ ...prev, ...userData }));
-
-        localStorage.setItem(
-          'formData',
-          JSON.stringify({
-            ...JSON.parse(localStorage.getItem('formData') || '{}'),
-            personalInfo: userData,
-          })
-        );
+        if (userSnap.exists()) {
+          const userData = userSnap.data().data?.personalInfo || {};
+          setFormData((prev) => ({ ...prev, ...userData }));
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
     };
 
@@ -51,21 +48,36 @@ const PersonalInfo = ({ next, onSave }) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
+    const updatedData = {
+      ...formData,
       [name]: value,
-    }));
+    };
+    setFormData(updatedData);
 
     localStorage.setItem(
       'formData',
       JSON.stringify({
         ...JSON.parse(localStorage.getItem('formData') || '{}'),
-        personalInfo: { ...formData, [name]: value },
+        personalInfo: updatedData,
       })
     );
   };
 
   const handleNext = () => {
+    const requiredFields = ['fullName', 'email', 'phone', 'workPosition'];
+    const newErrors = {};
+
+    requiredFields.forEach((field) => {
+      if (!formData[field]) {
+        newErrors[field] = t('fieldRequired');
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     onSave(formData, 'personalInfo');
     next();
   };
@@ -90,7 +102,7 @@ const PersonalInfo = ({ next, onSave }) => {
     }
 
     return (
-      <div key={key}>
+      <div key={key} className="flex flex-col gap-1">
         <InputField
           onChange={handleInputChange}
           label={label}
@@ -98,6 +110,9 @@ const PersonalInfo = ({ next, onSave }) => {
           value={formData[key]}
           t={t}
         />
+        {errors[key] && (
+          <span className="text-red-500 text-sm">{errors[key]}</span>
+        )}
       </div>
     );
   };
