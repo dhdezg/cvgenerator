@@ -2,6 +2,7 @@ import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
 import {
   formatDate,
+  getUniqueWorkSkills,
   hasValidLanguages,
   hasValidPersonalInfo,
   hasValidSkills,
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     padding: 30,
     color: '#000000',
     fontFamily: 'Helvetica',
-    lineHeight: 1.5,
+    lineHeight: 1.3,
     fontSize: 11,
   },
   personalInfo: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   section: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   sectionTitle: {
     fontSize: 12,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   listItem: {
-    marginBottom: 4,
+    marginBottom: 2,
     paddingLeft: 4,
     textAlign: 'left',
   },
@@ -105,7 +106,7 @@ const HarvardResume = ({ data, translations }) => {
             </Text>
             <View style={styles.divider} />
             {workExperience.map((work, workIndex) => (
-              <View key={workIndex} style={{ marginBottom: 10 }}>
+              <View key={workIndex} style={{ marginBottom: 6 }}>
                 <View style={[styles.row, { justifyContent: 'space-between' }]}>
                   <Text style={styles.textBold}>{work.companyName}</Text>
                   <Text style={styles.text}>
@@ -120,28 +121,6 @@ const HarvardResume = ({ data, translations }) => {
                   {work.position}
                 </Text>
 
-                {work.technologies &&
-                  work.technologies.trim().length > 0 &&
-                  work.technologies !== ',' && (
-                    <>
-                      <Text style={styles.textBold}>
-                        {translations.usedTechs}:
-                      </Text>
-                      <View
-                        style={[styles.columnContainer, { marginLeft: 10 }]}>
-                        {work.technologies
-                          .split(',')
-                          .filter((tech) => tech.trim().length > 0)
-                          .map((technology, index) => (
-                            <Text key={index} style={styles.columnItem}>
-                              • {technology.trim()}
-                            </Text>
-                          ))}
-                      </View>
-                    </>
-                  )}
-
-                <Text style={styles.textBold}>{translations.tasks}:</Text>
                 <View style={{ marginLeft: 10 }}>
                   {work.tasks.split('.').map(
                     (task, index) =>
@@ -157,7 +136,22 @@ const HarvardResume = ({ data, translations }) => {
           </View>
         )}
 
-        {/* Skills */}
+        {/*Tech Skills */}
+        {hasValidWorkExperience(workExperience) && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{translations.techStack}</Text>
+            <View style={styles.divider} />
+            <View style={styles.columnContainer}>
+              {getUniqueWorkSkills(workExperience).map((skill, index) => (
+                <Text key={index} style={styles.columnItem}>
+                  • {skill}
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {/* Soft Skills */}
         {hasValidSkills(skills) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{translations.skills}</Text>
