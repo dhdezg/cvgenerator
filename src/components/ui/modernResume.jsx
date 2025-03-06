@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingHorizontal: 10,
     textAlign: 'left',
-    fontSize: 12,
+    fontSize: 10,
   },
   nameContainer: {
     width: '100%',
