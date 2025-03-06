@@ -129,6 +129,7 @@ const resources = {
       changeLanguage: 'Change language',
       logOut: 'Log out',
       logIn: 'Log in',
+      fieldRequired: 'Required information',
     },
   },
   es: {
@@ -257,6 +258,7 @@ const resources = {
       changeLanguage: 'Cambiar idioma',
       logOut: 'Cerrar sesión',
       logIn: 'Iniciar sesión',
+      fieldRequired: 'Información obligatoria',
     },
   },
 };

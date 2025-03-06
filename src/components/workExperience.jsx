@@ -28,6 +28,8 @@ const WorkExperience = ({ next, prev, onSave }) => {
       : [{ ...emptyExperience }];
   });
 
+  const [errors, setErrors] = useState([]);
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
@@ -72,6 +74,26 @@ const WorkExperience = ({ next, prev, onSave }) => {
   };
 
   const handleNext = () => {
+    const requiredFields = ['companyName', 'startDate', 'position'];
+    const newErrors = [];
+
+    experiences.forEach((exp, index) => {
+      const experienceErrors = {};
+      requiredFields.forEach((field) => {
+        if (!exp[field]) {
+          experienceErrors[field] = t('fieldRequired');
+        }
+      });
+      if (Object.keys(experienceErrors).length > 0) {
+        newErrors[index] = experienceErrors;
+      }
+    });
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const validExperiences = experiences.filter((exp) =>
       Object.values(exp).some((value) => value.trim() !== '')
     );
@@ -104,15 +126,32 @@ const WorkExperience = ({ next, prev, onSave }) => {
     const label = t(key);
 
     if (key === 'startDate' || key === 'endDate') {
+      if (key === 'endDate') {
+        return (
+          <InputField
+            type="date"
+            onChange={(e) => handleInputChange(index, e)}
+            label={label}
+            name={key}
+            value={value || ''}
+            t={t}
+          />
+        );
+      }
       return (
-        <InputField
-          type="date"
-          onChange={(e) => handleInputChange(index, e)}
-          label={label}
-          name={key}
-          value={value || ''}
-          t={t}
-        />
+        <>
+          <InputField
+            type="date"
+            onChange={(e) => handleInputChange(index, e)}
+            label={label}
+            name={key}
+            value={value || ''}
+            t={t}
+          />
+          {errors[index]?.[key] && (
+            <span className="text-red-500 text-sm">{errors[index][key]}</span>
+          )}
+        </>
       );
     } else if (key === 'tasks') {
       return (
@@ -149,14 +188,19 @@ const WorkExperience = ({ next, prev, onSave }) => {
     }
 
     return (
-      <InputField
-        key={key}
-        onChange={(e) => handleInputChange(index, e)}
-        label={label}
-        name={key}
-        value={value}
-        t={t}
-      />
+      <div className="flex flex-col gap-1">
+        <InputField
+          key={key}
+          onChange={(e) => handleInputChange(index, e)}
+          label={label}
+          name={key}
+          value={value}
+          t={t}
+        />
+        {errors[index]?.[key] && (
+          <span className="text-red-500 text-sm">{errors[index][key]}</span>
+        )}
+      </div>
     );
   };
 

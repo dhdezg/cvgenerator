@@ -24,6 +24,7 @@ const PersonalInfo = ({ next, onSave }) => {
           aboutMe: '',
         };
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,6 +67,20 @@ const PersonalInfo = ({ next, onSave }) => {
   };
 
   const handleNext = () => {
+    const requiredFields = ['fullName', 'email', 'phone', 'workPosition'];
+    const newErrors = {};
+
+    requiredFields.forEach((field) => {
+      if (!formData[field]) {
+        newErrors[field] = t('fieldRequired');
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     onSave(formData, 'personalInfo');
     next();
   };
@@ -90,7 +105,7 @@ const PersonalInfo = ({ next, onSave }) => {
     }
 
     return (
-      <div key={key}>
+      <div key={key} className="flex flex-col gap-1">
         <InputField
           onChange={handleInputChange}
           label={label}
@@ -98,6 +113,9 @@ const PersonalInfo = ({ next, onSave }) => {
           value={formData[key]}
           t={t}
         />
+        {errors[key] && (
+          <span className="text-red-500 text-sm">{errors[key]}</span>
+        )}
       </div>
     );
   };
