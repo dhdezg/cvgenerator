@@ -108,7 +108,7 @@ const Skills = ({ next, prev, onSave }) => {
                   <InputField
                     key={key}
                     label={t('skillName')}
-                    name="name"
+                    name="skill"
                     value={skill[key]}
                     onChange={(e) =>
                       handleSkillChange(index, key, e.target.value)
