@@ -9,3 +9,28 @@ To help users to get this resume without worrying about the styles, I have devel
 # For developers who want to contribute
 
 Currently there are quite a few improvements that could be implemented in the application, you can download the repository, create a new branch for the development you want to do and open the Pull Request, when I have time I will review it, if there is no problem and I consider that it is a good implementation it will be approved and merge.
+
+## 🛠️ Development Setup
+
+### 🎨 Prettier in VS Code
+
+To ensure consistent code formatting across the project, we recommend configuring **Prettier** as the default formatter in Visual Studio Code.
+
+Follow these steps:
+
+1. 🔍 Open the command palette:  
+   `Ctrl + Shift + P` (Windows/Linux) or `Cmd + Shift + P` (Mac)
+
+2. 🧩 Search for **Format Document With...** and select:  
+   `Prettier - Code formatter`
+
+3. ⚙️ Open settings:  
+   `Ctrl + ,` (Windows/Linux) or `Cmd + ,` (Mac)
+
+4. ✍️ Search for **Editor: Default Formatter** and set it to:  
+   `Prettier - Code formatter`
+
+5. 💾 Enable format on save:  
+   Search for **Editor: Format On Save** and make sure it's checked ✅
+
+This will automatically format your files every time you save.
