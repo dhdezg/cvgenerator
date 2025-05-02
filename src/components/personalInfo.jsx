@@ -69,7 +69,7 @@ const PersonalInfo = ({ next, onSave }) => {
 
     requiredFields.forEach((field) => {
       if (!formData[field]) {
-        newErrors[field] = t('fieldRequired');
+        newErrors[field] = 'fieldRequired';
       }
     });
 
@@ -111,7 +111,7 @@ const PersonalInfo = ({ next, onSave }) => {
           t={t}
         />
         {errors[key] && (
-          <span className="text-red-500 text-sm">{errors[key]}</span>
+          <span className="text-red-500 text-sm">{t(errors[key])}</span>
         )}
       </div>
     );

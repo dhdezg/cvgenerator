@@ -9,6 +9,7 @@ import Languages from './components/languages';
 import PersonalInfo from './components/personalInfo';
 import Resume from './components/resume';
 import Skills from './components/skills';
+import StepProgressBar from './components/stepProgressBar.jsx';
 import Studies from './components/studies';
 import Tooltip from './components/ui/tooltip.jsx';
 import Welcome from './components/welcome';
@@ -51,13 +52,13 @@ const App = () => {
   }, []);
 
   const STEPS = {
-    WELCOME: 1,
-    PERSONAL_INFO: 2,
-    WORK_EXPERIENCE: 3,
-    SKILLS: 4,
-    STUDIES: 5,
-    LANGUAGES: 6,
-    RESUME: 7,
+    WELCOME: 0, // Set WELCOME to 0 to exclude it from the progress bar
+    PERSONAL_INFO: 1,
+    WORK_EXPERIENCE: 2,
+    SKILLS: 3,
+    STUDIES: 4,
+    LANGUAGES: 5,
+    RESUME: 6,
   };
 
   const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
@@ -75,12 +76,16 @@ const App = () => {
 
   const nextStep = () => {
     setCurrentStep(
-      currentStep < Object.keys(STEPS).length ? currentStep + 1 : currentStep
+      currentStep < Object.keys(STEPS).length - 1
+        ? currentStep + 1
+        : currentStep
     );
   };
 
   const prevStep = () => {
-    setCurrentStep(currentStep > STEPS.WELCOME ? currentStep - 1 : currentStep);
+    setCurrentStep(
+      currentStep > STEPS.PERSONAL_INFO ? currentStep - 1 : currentStep
+    );
   };
 
   const handleSave = async (data, section) => {
@@ -191,6 +196,15 @@ const App = () => {
     }
   };
 
+  const stepLabels = [
+    t('personalInfo'),
+    t('workExperienceTitle'),
+    t('skills'),
+    t('studiesTitle'),
+    t('languages'),
+    t('resumeTitle'),
+  ];
+
   return (
     <div className="font-poppins bg-midnight-950 min-h-screen flex flex-col w-full overflow-x-hidden">
       <div id="header" className="flex justify-between items-center p-5">
@@ -230,6 +244,9 @@ const App = () => {
           </div>
         </div>
       </div>
+      {currentStep !== STEPS.WELCOME ? (
+        <StepProgressBar steps={stepLabels} currentStep={currentStep} />
+      ) : null}
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {showAuth && <Auth onClose={() => setShowAuth(false)} />}
         {renderStep()}
@@ -238,7 +255,8 @@ const App = () => {
         {t('footerText')}&nbsp;
         <a
           href="https://dario-dev.vercel.app/"
-          className="hover:text-midnight-800 hover:underline">
+          className="hover:text-midnight-800 hover:underline"
+        >
           dario.dev
         </a>
       </footer>
