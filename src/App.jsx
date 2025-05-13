@@ -60,6 +60,7 @@ const App = () => {
     setCurrentStep(
       currentStep > STEPS.PERSONAL_INFO ? currentStep - 1 : currentStep
     );
+    NAVIGATE_TO[currentStep - 1]();
   };
 
   const goHome = () => {
