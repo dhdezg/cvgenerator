@@ -1,70 +1,51 @@
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { X } from 'lucide-react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { auth, db, googleProvider } from '../firebaseConfig';
+import { useAuth } from '../contexts/AuthContext';
 
 const Auth = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegister, setIsRegister] = useState(false);
-  const [error, setError] = useState('');
   const { t } = useTranslation();
+
+  // Use auth context methods and state
+  const { login, register, loginWithGoogle, authError } = useAuth();
 
   const handleAuth = async (event) => {
     event.preventDefault();
-    setError('');
 
     try {
       if (isRegister) {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        await sendEmailVerification(userCredential.user);
-        setError(t('auth.verificationEmailSent'));
+        const result = await register(email, password);
+        if (result.success) {
+          if (result.message === 'verification_email_sent') {
+            // Show verification email message if needed
+            // We could add a UI state here to show a success message
+          }
+          onClose();
+        }
       } else {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        await saveUserToFirestore(userCredential.user);
+        const result = await login(email, password);
+        if (result.success) {
+          onClose();
+        }
       }
-      onClose();
     } catch (err) {
-      setError(t(`authErrors.${err.code}`) || err.message);
+      // Error handling is now in the context
+      console.error(err);
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await signInWithPopup(auth, googleProvider);
-      await saveUserToFirestore(userCredential.user);
-      onClose();
+      const result = await loginWithGoogle();
+      if (result.success) {
+        onClose();
+      }
     } catch (err) {
-      setError(t(`authErrors.${err.code}`) || err.message);
-    }
-  };
-
-  const saveUserToFirestore = async (user) => {
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        email: user.email,
-        createdAt: new Date(),
-        data: {},
-      });
+      console.error(err);
     }
   };
 
@@ -102,11 +83,16 @@ const Auth = ({ onClose }) => {
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {authError && (
+            <p className="text-red-500 text-sm text-center">
+              {t(`authErrors.${authError}`) || authError}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-midnight-600 text-white py-3 rounded-lg hover:bg-midnight-700 transition-colors">
+            className="w-full bg-midnight-600 text-white py-3 rounded-lg hover:bg-midnight-700 transition-colors"
+          >
             {isRegister ? t('auth.registerButton') : t('auth.loginButton')}
           </button>
         </form>
@@ -121,7 +107,8 @@ const Auth = ({ onClose }) => {
 
         <button
           onClick={handleGoogleLogin}
-          className="w-full border border-midnight-500 py-3 rounded-lg hover:bg-midnight-50 transition-colors flex items-center justify-center gap-2">
+          className="w-full border border-midnight-500 py-3 rounded-lg hover:bg-midnight-50 transition-colors flex items-center justify-center gap-2"
+        >
           <img
             src="https://www.google.com/favicon.ico"
             alt="Google"
@@ -133,7 +120,8 @@ const Auth = ({ onClose }) => {
         <p className="mt-4 text-center text-midnight-600">
           <button
             onClick={() => setIsRegister(!isRegister)}
-            className="hover:underline">
+            className="hover:underline"
+          >
             {isRegister ? t('auth.haveAccount') : t('auth.noAccount')}
           </button>
         </p>
