@@ -1,11 +1,12 @@
 import { Globe, House, UserRound, UserRoundX } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, Routes, useNavigate } from 'react-router';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import '../i18n.js';
 import Auth from './components/auth';
 import Languages from './components/languages';
 import PersonalInfo from './components/personalInfo';
+import ProtectedStepRoute from './components/ProtectedRoute.jsx';
 import Resume from './components/resume';
 import Skills from './components/skills';
 import StepProgressBar from './components/stepProgressBar.jsx';
@@ -21,19 +22,23 @@ const App = () => {
   const { i18n, t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || 'es');
   const [showAuth, setShowAuth] = useState(false);
+  const location = useLocation();
 
   // Use auth context instead of local state
   const { user, formData, logout, saveFormData, clearFormData } = useAuth();
 
-  const STEPS = {
-    WELCOME: 0, // Set WELCOME to 0 to exclude it from the progress bar
-    PERSONAL_INFO: 1,
-    WORK_EXPERIENCE: 2,
-    SKILLS: 3,
-    STUDIES: 4,
-    LANGUAGES: 5,
-    RESUME: 6,
-  };
+  const STEPS = useMemo(
+    () => ({
+      WELCOME: 0, // Set WELCOME to 0 to exclude it from the progress bar
+      PERSONAL_INFO: 1,
+      WORK_EXPERIENCE: 2,
+      SKILLS: 3,
+      STUDIES: 4,
+      LANGUAGES: 5,
+      RESUME: 6,
+    }),
+    []
+  );
 
   const NAVIGATE_TO = {
     [STEPS.WELCOME]: () => navigate('/'),
@@ -45,15 +50,39 @@ const App = () => {
     [STEPS.RESUME]: () => navigate('/resume'),
   };
 
-  const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
+  const PATH_TO_STEP = useMemo(
+    () => ({
+      '/': STEPS.WELCOME,
+      '/personal-info': STEPS.PERSONAL_INFO,
+      '/work-experience': STEPS.WORK_EXPERIENCE,
+      '/skills': STEPS.SKILLS,
+      '/studies': STEPS.STUDIES,
+      '/languages': STEPS.LANGUAGES,
+      '/resume': STEPS.RESUME,
+    }),
+    [STEPS]
+  );
+
+  const [currentStep, setCurrentStep] = useState(
+    PATH_TO_STEP[location.pathname] || STEPS.WELCOME
+  );
+
+  useEffect(() => {
+    setCurrentStep(PATH_TO_STEP[location.pathname] ?? STEPS.WELCOME);
+  }, [PATH_TO_STEP, STEPS.WELCOME, location.pathname]);
 
   const nextStep = () => {
-    setCurrentStep(
-      currentStep < Object.keys(STEPS).length - 1
-        ? currentStep + 1
-        : currentStep
-    );
-    NAVIGATE_TO[currentStep + 1]();
+    if (user) {
+      setCurrentStep(STEPS.RESUME);
+      NAVIGATE_TO[STEPS.RESUME]();
+    } else {
+      setCurrentStep(
+        currentStep < Object.keys(STEPS).length - 1
+          ? currentStep + 1
+          : currentStep
+      );
+      NAVIGATE_TO[currentStep + 1]();
+    }
   };
 
   const prevStep = () => {
@@ -65,7 +94,7 @@ const App = () => {
 
   const goHome = () => {
     setCurrentStep(STEPS.WELCOME);
-    clearFormData();
+    !user && clearFormData();
     NAVIGATE_TO[STEPS.WELCOME]();
   };
 
@@ -143,56 +172,70 @@ const App = () => {
           <Route
             path="/personal-info"
             element={
-              <PersonalInfo
-                next={nextStep}
-                prev={prevStep}
-                onSave={(data) => saveFormData(data, 'personalInfo')}
-              />
+              <ProtectedStepRoute stepKey="personalInfo">
+                <PersonalInfo
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'personalInfo')}
+                />
+              </ProtectedStepRoute>
             }
           />
           <Route
             path="/work-experience"
             element={
-              <WorkExperience
-                next={nextStep}
-                prev={prevStep}
-                onSave={(data) => saveFormData(data, 'workExperience')}
-              />
+              <ProtectedStepRoute stepKey="workExperience">
+                <WorkExperience
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'workExperience')}
+                />
+              </ProtectedStepRoute>
             }
           />
           <Route
             path="/skills"
             element={
-              <Skills
-                next={nextStep}
-                prev={prevStep}
-                onSave={(data) => saveFormData(data, 'skills')}
-              />
+              <ProtectedStepRoute stepKey="skills">
+                <Skills
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'skills')}
+                />
+              </ProtectedStepRoute>
             }
           />
           <Route
             path="/studies"
             element={
-              <Studies
-                next={nextStep}
-                prev={prevStep}
-                onSave={(data) => saveFormData(data, 'studies')}
-              />
+              <ProtectedStepRoute stepKey="studies">
+                <Studies
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'studies')}
+                />
+              </ProtectedStepRoute>
             }
           />
           <Route
             path="/languages"
             element={
-              <Languages
-                next={nextStep}
-                prev={prevStep}
-                onSave={(data) => saveFormData(data, 'languages')}
-              />
+              <ProtectedStepRoute stepKey="languages">
+                <Languages
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'languages')}
+                />
+              </ProtectedStepRoute>
             }
           />
           <Route
             path="/resume"
-            element={<Resume data={formData} prev={prevStep} />}
+            element={
+              <ProtectedStepRoute stepKey="resume">
+                <Resume data={formData} prev={prevStep} />
+              </ProtectedStepRoute>
+            }
           />
           <Route
             path="*"

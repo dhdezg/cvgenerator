@@ -9,11 +9,13 @@ import {
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { auth, db, googleProvider } from '../firebaseConfig';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     personalInfo: {},
@@ -140,6 +142,8 @@ export const AuthProvider = ({ children }) => {
       // Clear form data or load from localStorage after logout
       const localData = JSON.parse(localStorage.getItem('formData') || '{}');
       setFormData(localData);
+      clearFormData();
+      navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
