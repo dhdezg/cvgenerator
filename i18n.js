@@ -6,6 +6,7 @@ const resources = {
     translation: {
       welcome: 'Welcome to CV Generator',
       start: 'Create your resume now!',
+      startUser: 'Continue creating your resume',
       prevStep: 'Previous step',
       nextStep: 'Next step',
       personalInfoTitle: 'Your personal data',
@@ -136,6 +137,7 @@ const resources = {
     translation: {
       welcome: 'Bienvenido a CV Generator',
       start: 'Crea tu currículum ya!',
+      startUser: 'Continúa creando tu currículum',
       prevStep: 'Paso anterior',
       nextStep: 'Siguiente paso',
       personalInfoTitle: 'Tus datos personales',

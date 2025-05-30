@@ -1,12 +1,12 @@
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Globe, House, UserRound, UserRoundX } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import '../i18n.js';
 import Auth from './components/auth';
 import Languages from './components/languages';
 import PersonalInfo from './components/personalInfo';
+import ProtectedStepRoute from './components/ProtectedRoute.jsx';
 import Resume from './components/resume';
 import Skills from './components/skills';
 import StepProgressBar from './components/stepProgressBar.jsx';
@@ -14,120 +14,88 @@ import Studies from './components/studies';
 import Tooltip from './components/ui/tooltip.jsx';
 import Welcome from './components/welcome';
 import WorkExperience from './components/workExperience';
-import { auth, db } from './firebaseConfig.js';
+import { useAuth } from './contexts/AuthContext.jsx';
 import './index.css';
 
 const App = () => {
+  const navigate = useNavigate();
   const { i18n, t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || 'es');
-  const [user, setUser] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
+  const location = useLocation();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        // If user is logged in, try to retrive Firebase data
-        const userRef = doc(db, 'users', currentUser.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const firebaseData = userSnap.data().data;
-          // Merge Firebase and localStorage data if exists
-          const localData = JSON.parse(
-            localStorage.getItem('formData') || '{}'
-          );
-          setFormData({
-            ...localData,
-            ...firebaseData,
-          });
-        }
-      } else {
-        // If there are not user logged in, use localStorage data
-        const localData = JSON.parse(localStorage.getItem('formData') || '{}');
-        setFormData(localData);
-      }
-    });
+  // Use auth context instead of local state
+  const { user, formData, logout, saveFormData, clearFormData } = useAuth();
 
-    return () => unsubscribe();
-  }, []);
+  const STEPS = useMemo(
+    () => ({
+      WELCOME: 0, // Set WELCOME to 0 to exclude it from the progress bar
+      PERSONAL_INFO: 1,
+      WORK_EXPERIENCE: 2,
+      SKILLS: 3,
+      STUDIES: 4,
+      LANGUAGES: 5,
+      RESUME: 6,
+    }),
+    []
+  );
 
-  const STEPS = {
-    WELCOME: 0, // Set WELCOME to 0 to exclude it from the progress bar
-    PERSONAL_INFO: 1,
-    WORK_EXPERIENCE: 2,
-    SKILLS: 3,
-    STUDIES: 4,
-    LANGUAGES: 5,
-    RESUME: 6,
+  const NAVIGATE_TO = {
+    [STEPS.WELCOME]: () => navigate('/'),
+    [STEPS.PERSONAL_INFO]: () => navigate('/personal-info'),
+    [STEPS.WORK_EXPERIENCE]: () => navigate('/work-experience'),
+    [STEPS.SKILLS]: () => navigate('/skills'),
+    [STEPS.STUDIES]: () => navigate('/studies'),
+    [STEPS.LANGUAGES]: () => navigate('/languages'),
+    [STEPS.RESUME]: () => navigate('/resume'),
   };
 
-  const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
-  const [formData, setFormData] = useState({
-    personalInfo: {},
-    workExperience: [],
-    skills: [],
-    studies: [],
-    languages: [],
-  });
+  const PATH_TO_STEP = useMemo(
+    () => ({
+      '/': STEPS.WELCOME,
+      '/personal-info': STEPS.PERSONAL_INFO,
+      '/work-experience': STEPS.WORK_EXPERIENCE,
+      '/skills': STEPS.SKILLS,
+      '/studies': STEPS.STUDIES,
+      '/languages': STEPS.LANGUAGES,
+      '/resume': STEPS.RESUME,
+    }),
+    [STEPS]
+  );
+
+  const [currentStep, setCurrentStep] = useState(
+    PATH_TO_STEP[location.pathname] || STEPS.WELCOME
+  );
 
   useEffect(() => {
-    localStorage.removeItem('formData');
-  }, []);
+    setCurrentStep(PATH_TO_STEP[location.pathname] ?? STEPS.WELCOME);
+  }, [PATH_TO_STEP, STEPS.WELCOME, location.pathname]);
 
   const nextStep = () => {
-    setCurrentStep(
-      currentStep < Object.keys(STEPS).length - 1
-        ? currentStep + 1
-        : currentStep
-    );
+    if (user) {
+      setCurrentStep(STEPS.RESUME);
+      NAVIGATE_TO[STEPS.RESUME]();
+    } else {
+      setCurrentStep(
+        currentStep < Object.keys(STEPS).length - 1
+          ? currentStep + 1
+          : currentStep
+      );
+      NAVIGATE_TO[currentStep + 1]();
+    }
   };
 
   const prevStep = () => {
     setCurrentStep(
       currentStep > STEPS.PERSONAL_INFO ? currentStep - 1 : currentStep
     );
-  };
-
-  const handleSave = async (data, section) => {
-    const processedData =
-      section === 'workExperience' && !Array.isArray(data) ? [data] : data;
-
-    const newFormData = {
-      ...formData,
-      [section]: processedData,
-    };
-
-    // Save always in localStorage
-    setFormData(newFormData);
-    localStorage.setItem('formData', JSON.stringify(newFormData));
-
-    // Only if user is logged in, save in Firebase
-    if (auth.currentUser) {
-      try {
-        const userRef = doc(db, 'users', auth.currentUser.uid);
-        const docSnap = await getDoc(userRef);
-        const existingData = docSnap.exists() ? docSnap.data().data || {} : {};
-        const updatedData = {
-          ...existingData,
-          [section]: processedData,
-        };
-        await setDoc(userRef, { data: updatedData }, { merge: true });
-      } catch (error) {
-        console.error('Error al guardar en Firestore:', error);
-      }
-    }
+    NAVIGATE_TO[currentStep - 1]();
   };
 
   const goHome = () => {
     setCurrentStep(STEPS.WELCOME);
-    setFormData({
-      personalInfo: {},
-      workExperience: [],
-      skills: [],
-      studies: [],
-      languages: [],
-    });
-    localStorage.removeItem('formData');
+    !user && clearFormData();
+    NAVIGATE_TO[STEPS.WELCOME]();
   };
 
   const toggleLanguage = () => {
@@ -144,57 +112,6 @@ const App = () => {
       setLanguage(savedLanguage);
     }
   }, [i18n]);
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case STEPS.WELCOME:
-        return <Welcome next={nextStep} />;
-      case STEPS.PERSONAL_INFO:
-        return (
-          <PersonalInfo
-            next={nextStep}
-            prev={prevStep}
-            onSave={(data) => handleSave(data, 'personalInfo')}
-          />
-        );
-      case STEPS.WORK_EXPERIENCE:
-        return (
-          <WorkExperience
-            next={nextStep}
-            prev={prevStep}
-            onSave={(data) => handleSave(data, 'workExperience')}
-          />
-        );
-      case STEPS.SKILLS:
-        return (
-          <Skills
-            next={nextStep}
-            prev={prevStep}
-            onSave={(data) => handleSave(data, 'skills')}
-          />
-        );
-      case STEPS.STUDIES:
-        return (
-          <Studies
-            next={nextStep}
-            prev={prevStep}
-            onSave={(data) => handleSave(data, 'studies')}
-          />
-        );
-      case STEPS.LANGUAGES:
-        return (
-          <Languages
-            next={nextStep}
-            prev={prevStep}
-            onSave={(data) => handleSave(data, 'languages')}
-          />
-        );
-      case STEPS.RESUME:
-        return <Resume data={formData} prev={prevStep} />;
-      default:
-        return <div>Error: Step not found</div>;
-    }
-  };
 
   const stepLabels = [
     t('personalInfo'),
@@ -222,7 +139,7 @@ const App = () => {
             <div className="flex items-center gap-2">
               <span className="text-midnight-50">{user.email}</span>
               <div className="relative flex items-center group">
-                <button onClick={() => signOut(auth)}>
+                <button onClick={logout}>
                   <UserRoundX size={36} className="header-button" />
                 </button>
                 <Tooltip message={t('logOut')} position="left"></Tooltip>
@@ -247,9 +164,90 @@ const App = () => {
       {currentStep !== STEPS.WELCOME ? (
         <StepProgressBar steps={stepLabels} currentStep={currentStep} />
       ) : null}
+
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
         {showAuth && <Auth onClose={() => setShowAuth(false)} />}
-        {renderStep()}
+        <Routes>
+          <Route path="/" element={<Welcome next={nextStep} />} />
+          <Route
+            path="/personal-info"
+            element={
+              <ProtectedStepRoute stepKey="personalInfo">
+                <PersonalInfo
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'personalInfo')}
+                />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="/work-experience"
+            element={
+              <ProtectedStepRoute stepKey="workExperience">
+                <WorkExperience
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'workExperience')}
+                />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="/skills"
+            element={
+              <ProtectedStepRoute stepKey="skills">
+                <Skills
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'skills')}
+                />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="/studies"
+            element={
+              <ProtectedStepRoute stepKey="studies">
+                <Studies
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'studies')}
+                />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="/languages"
+            element={
+              <ProtectedStepRoute stepKey="languages">
+                <Languages
+                  next={nextStep}
+                  prev={prevStep}
+                  onSave={(data) => saveFormData(data, 'languages')}
+                />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="/resume"
+            element={
+              <ProtectedStepRoute stepKey="resume">
+                <Resume data={formData} prev={prevStep} />
+              </ProtectedStepRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <span
+                style={{ fontWeight: 'bold', color: 'white', fontSize: '30px' }}
+              >
+                404 Not Found
+              </span>
+            }
+          />
+        </Routes>
       </main>
       <footer className="mx-auto text-midnight-50">
         {t('footerText')}&nbsp;
