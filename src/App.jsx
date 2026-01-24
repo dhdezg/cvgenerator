@@ -101,7 +101,6 @@ const App = () => {
   };
 
   const goToStep = (stepNumber) => {
-    // Permite navegar a cualquier paso excepto el WELCOME
     if (stepNumber !== STEPS.WELCOME) {
       setCurrentStep(stepNumber);
       NAVIGATE_TO[stepNumber]();
