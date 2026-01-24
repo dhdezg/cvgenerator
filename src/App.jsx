@@ -66,13 +66,15 @@ const App = () => {
   const [currentStep, setCurrentStep] = useState(
     PATH_TO_STEP[location.pathname] || STEPS.WELCOME
   );
+  const [isFirstInteraction, setIsFirstInteraction] = useState(true);
 
   useEffect(() => {
     setCurrentStep(PATH_TO_STEP[location.pathname] ?? STEPS.WELCOME);
   }, [PATH_TO_STEP, STEPS.WELCOME, location.pathname]);
 
   const nextStep = () => {
-    if (user) {
+    if (user && isFirstInteraction) {
+      setIsFirstInteraction(false);
       setCurrentStep(STEPS.RESUME);
       NAVIGATE_TO[STEPS.RESUME]();
     } else {
@@ -96,6 +98,13 @@ const App = () => {
     setCurrentStep(STEPS.WELCOME);
     !user && clearFormData();
     NAVIGATE_TO[STEPS.WELCOME]();
+  };
+
+  const goToStep = (stepNumber) => {
+    if (stepNumber !== STEPS.WELCOME) {
+      setCurrentStep(stepNumber);
+      NAVIGATE_TO[stepNumber]();
+    }
   };
 
   const toggleLanguage = () => {
@@ -162,7 +171,11 @@ const App = () => {
         </div>
       </div>
       {currentStep !== STEPS.WELCOME ? (
-        <StepProgressBar steps={stepLabels} currentStep={currentStep} />
+        <StepProgressBar
+          steps={stepLabels}
+          currentStep={currentStep}
+          onStepClick={goToStep}
+        />
       ) : null}
 
       <main className="flex-grow flex-shrink-0 flex items-center justify-center">
