@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const StepProgressBar = ({ steps, currentStep }) => {
+const StepProgressBar = ({ steps, currentStep, onStepClick }) => {
   const progressPercentage = (currentStep / steps.length) * 100;
 
   return (
@@ -12,14 +12,17 @@ const StepProgressBar = ({ steps, currentStep }) => {
       {/* Step labels for larger screens */}
       <div className="hidden sm:flex justify-between mb-2">
         {steps.map((step, index) => (
-          <div
+          <button
             key={index}
-            className={`text-xs sm:text-sm ${
-              index + 1 <= currentStep ? 'text-blue-500' : 'text-gray-400'
+            onClick={() => onStepClick(index + 1)}
+            className={`text-xs sm:text-sm transition-colors duration-200 cursor-pointer hover:opacity-80 ${
+              index + 1 <= currentStep
+                ? 'text-blue-500 font-semibold'
+                : 'text-gray-400'
             }`}
           >
             {step}
-          </div>
+          </button>
         ))}
       </div>
       {/* Progress bar */}
@@ -36,6 +39,7 @@ const StepProgressBar = ({ steps, currentStep }) => {
 StepProgressBar.propTypes = {
   steps: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentStep: PropTypes.number.isRequired,
+  onStepClick: PropTypes.func.isRequired,
 };
 
 export default StepProgressBar;
